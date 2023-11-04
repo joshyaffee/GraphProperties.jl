@@ -35,7 +35,7 @@ function compute(
     # Instantiate the model.
     model = Model(optimizer)
 
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)

@@ -42,22 +42,28 @@ function compute(
     model = Model(optimizer)  # You can replace Cbc with your preferred optimizer
     JuMP.set_silent(model)  # Suppress solver output
 
+    # The vertex set.
+    V = Graphs.vertices(g)
+
+    # The edge set.
+    E = Graphs.edges(g)
+
     # Define binary variables for each vertex
-    @variable(model, x[vertices(g)], Bin)
+    @variable(model, x[V], Bin)
 
     # Define the objective function
-    @objective(model, Max, sum(x[v] for v in vertices(g)))
+    @objective(model, Max, sum(x[v] for v in V))
 
     # Add constraints: adjacent vertices cannot both be in the independent set
-    for e in edges(g)
-        @constraint(model, x[src(e)] + x[dst(e)] <= 1)
+    for e in E
+        @constraint(model, x[Graphs.src(e)] + x[Graphs.dst(e)] <= 1)
     end
 
     # Solve the optimization problem
     optimize!(model)
 
     # Extract the solution
-    independent_set = [v for v in vertices(g) if value(x[v]) == 1.0]
+    independent_set = [v for v in V if value(x[v]) == 1.0]
 
     return MaximumIndependentSet(independent_set)
 end

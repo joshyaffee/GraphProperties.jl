@@ -7,7 +7,7 @@ Return the chromatic number of `g`.
 """
 function compute(
     ::Type{ChromaticNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer = HiGHS.Optimizer
 ) where T <: Integer
     min_prop_coloring = compute(MinimumProperColoring, g; optimizer=optimizer)

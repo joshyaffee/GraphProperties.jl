@@ -3,7 +3,7 @@ function draw_optimal_set(
     optset::AbstractOptimalNodeSet
 )
     # Create a default color array filled with blue for each node
-    nodecolors = [colorant"lightblue" for _ in 1:nv(g)]
+    nodecolors = [colorant"lightblue" for _ in 1:Graphs.nv(g)]
 
     # Update the color for nodes that are in the optimal set
     for node in optset.nodes
@@ -14,7 +14,7 @@ function draw_optimal_set(
     gplot(
         g,
         nodefillc=nodecolors,
-        nodelabel=vertices(g),
+        nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
 end

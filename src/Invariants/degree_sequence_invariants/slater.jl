@@ -19,7 +19,7 @@ function compute(
     D = sort(degree(g), rev=true)
 
     # The number of vertices in `g`.
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # The sub-k-domination number of `g` is the smallest integer `t` such that
     # the sum of the degrees of the first `t` vertices in the sorted
@@ -58,8 +58,8 @@ function compute(
     ::Type{SubTotalDominationNumber},
     g::SimpleGraph{T},
 ) where T <: Integer
-    D = sort(degree(g), rev=true)  # Sort in non-increasing order
-    n = nv(g)
+    D = sort(Graphs.degree(g), rev=true)  # Sort in non-increasing order
+    n = Graphs.nv(g)
     for i in 1:n
         if sum(D[1:i]) >= n
             return i

@@ -5,7 +5,7 @@ function compute(
 ) where T <: Integer
 
     # Get the degree sequence of `g`.
-    sequence = degree(g)
+    sequence = Graphs.degree(g)
 
     # Sort the degree sequence in descending order.
     sort!(sequence, rev=true)

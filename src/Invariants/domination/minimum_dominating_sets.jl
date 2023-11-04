@@ -38,7 +38,7 @@ function compute(
     JuMP.set_silent(model)
 
     # The number of vertices.
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)
@@ -101,7 +101,7 @@ function compute(
     JuMP.set_silent(model)
 
     # The number of vertices.
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)
@@ -111,7 +111,7 @@ function compute(
 
     # Constraints: each vertex must either be in the dominating set or adjacent to a vertex in the set
     for u in 1:n
-        neighbors_u = neighbors(g, u)
+        neighbors_u = Graphs.neighbors(g, u)
         @constraint(model, sum(x[v] for v in neighbors_u) >= 1)
     end
 
@@ -176,7 +176,7 @@ function compute(
     model = Model(optimizer)
     JuMP.set_silent(model)
 
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)
@@ -220,7 +220,7 @@ function compute(
     JuMP.set_silent(model)
 
     # The number of vertices.
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)
@@ -230,14 +230,14 @@ function compute(
 
     # Constraints: each vertex must either be in the dominating set or adjacent to a vertex in the set
     for u in 1:n
-        neighbors_u = neighbors(g, u)
+        neighbors_u = Graphs.neighbors(g, u)
         @constraint(model, x[u] + sum(x[v] for v in neighbors_u) >= 1)
     end
 
     # Constraints: insure that no two vertices in the dominating set are adjacent
     for u in 1:n
         for v in (u+1):n
-            if has_edge(g, u, v)
+            if Graphs.has_edge(g, u, v)
                 @constraint(model, x[u] + x[v] <= 1)
             end
         end
@@ -264,7 +264,7 @@ function compute(
     JuMP.set_silent(model)
 
     # The edge set of the graph.
-    E = edges(g)
+    E = Graphs.edges(g)
 
     # Decision variable for each edge.
     @variable(model, x[E], Bin)
@@ -274,7 +274,7 @@ function compute(
 
     # Constraints: Each edge or at least one of its adjacent edges is in the MEDS
     for e in E
-        u, v = src(e), dst(e)
+        u, v = Graphs.src(e), Graphs.dst(e)
         adjacent_edges = [
             e2 for e2 in E
             if (e2 != e) &&
@@ -306,9 +306,12 @@ function compute(
     ::Type{MinimumPowerDominatingSet},
     g::AbstractGraph{T}
 ) where T <: Int
-    n = nv(g)
+
+    # The number of vertices.
+    n = Graphs.nv(g)
+
     for size in 1:n
-        for subset in combinations(1:n, size)
+        for subset in Combinatorics.combinations(1:n, size)
             blue = Set(subset)
             apply!(DominationRule, blue, g)
             apply!(ZeroForcingRule, blue, g; max_iter=n)
