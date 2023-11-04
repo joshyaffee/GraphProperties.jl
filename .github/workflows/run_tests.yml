@@ -1,10 +1,6 @@
 name: Run Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -12,11 +8,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Julia
-      uses: julia-actions/setup-julia@latest
+      uses: julia-actions/setup-julia@v1
       with:
-        version: '1.x'
+        version: '1.9.3'  # Use Julia version 1.9.3
+
+    - name: Install dependencies
+      run: julia --project=@. -e 'using Pkg; Pkg.instantiate()'
+
     - name: Run tests
-      run: |
-        julia --project=@. -e 'using Pkg; Pkg.instantiate();'
-        julia --project=@. -e 'using Pkg; Pkg.test();'
+      run: julia --project=@. -e 'using Pkg; Pkg.test()'
