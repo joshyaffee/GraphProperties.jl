@@ -1,6 +1,9 @@
 
 """
-    compute(::Type{ChromaticNumber}, g::AbstractGraph{T}) where T <: Integer
+    compute(
+        ::Type{ChromaticNumber},
+        g::AbstractGraph{T}
+    ) where T <: Integer
 
 Return the chromatic number of `g`.
 
