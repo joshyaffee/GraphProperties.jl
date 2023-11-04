@@ -34,6 +34,7 @@ function compute(
 
     # Instantiate the model.
     model = Model(optimizer)
+    JuMP.set_silent(model)
 
     n = Graphs.nv(g)
 
