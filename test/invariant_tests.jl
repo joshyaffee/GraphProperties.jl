@@ -1,8 +1,8 @@
 using Test
-
+using Graphs
+using GraphProperties.Invariants
 @testset "GraphProperties.Invariants.jl" begin
-    using Graphs
-    using GraphProperties.Invariants
+
 
     # The Petersen graph.
     g = Graphs.PetersenGraph()
