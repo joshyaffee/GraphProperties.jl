@@ -1,6 +1,5 @@
-using GraphProperties
 using Test
+using Graphs
+using GraphProperties.Invariants
 
-@testset "GraphProperties.jl" begin
-    # Write your tests here.
-end
+include("invariant_tests.jl")

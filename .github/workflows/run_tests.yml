@@ -1,0 +1,21 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Julia
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: '1.9.3'  # Use Julia version 1.9.3
+
+    - name: Install dependencies
+      run: julia --project=@. -e 'using Pkg; Pkg.instantiate()'
+
+    - name: Run tests
+      run: julia --project=@. -e 'using Pkg; Pkg.test()'
