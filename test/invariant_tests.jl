@@ -1,6 +1,8 @@
 using Test
 using Graphs
 using GraphProperties.Invariants
+
+
 @testset "GraphProperties.Invariants.jl" begin
 
 
@@ -14,7 +16,7 @@ using GraphProperties.Invariants
 
         @testset "Petersen Graph Tests" begin
             max_ind_set = compute(MaximumIndependentSet, g)
-            @test !isempty(max_ind_set)
+            @test !isempty(max_ind_set.nodes)
             @test compute(IndependenceNumber, g) == 4
         end
 
@@ -31,7 +33,7 @@ using GraphProperties.Invariants
 
         @testset "Clique Graph Tests" begin
             max_clique = compute(MaximumClique, h)
-            @test !isempty(max_clique)
+            @test !isempty(max_clique.nodes)
             @test compute(CliqueNumber, h) == 4
         end
 
@@ -41,7 +43,7 @@ using GraphProperties.Invariants
 
         @testset "Petersen Graph Tests" begin
             min_dom_set = compute(MinimumDominatingSet, g)
-            @test !isempty(min_dom_set)
+            @test !isempty(min_dom_set.nodes)
             @test compute(DominationNumber, g) == 3
         end
 
@@ -55,7 +57,7 @@ using GraphProperties.Invariants
 
         @testset "Petersen Graph Tests" begin
             min_tot_dom_set = compute(MinimumTotalDominatingSet, g)
-            @test !isempty(min_tot_dom_set)
+            @test !isempty(min_tot_dom_set.nodes)
             @test compute(TotalDominationNumber, g) == 4
         end
 
