@@ -315,19 +315,17 @@ struct KarateClub <: CommunityGraph end
 # MODULE INCLUDES
 # ============================
 
-include("GraphIO/GraphIO.jl")
-include("algorithms/label-propagation.jl")
-include("algorithms/fast-label-propagation.jl")
-include("algorithms/fast-weighted-label-propagation.jl")
-include("algorithms/louvain.jl")
-include("algorithms/k-clique.jl")
-include("algorithms/pagerank.jl")
-include("algorithms/Experimental.jl")
-include("community-structure/visualizations.jl")
-include("community-structure/community_analysis.jl")
-include("graph-constructors/graph-constructors.jl")
-
-
+include(joinpath(@__DIR__, "GraphIO", "GraphIO.jl"))
+include(joinpath(@__DIR__, "algorithms", "label-propagation.jl"))
+include(joinpath(@__DIR__, "algorithms", "fast-label-propagation.jl"))
+include(joinpath(@__DIR__, "algorithms", "fast-weighted-label-propagation.jl"))
+include(joinpath(@__DIR__, "algorithms", "louvain.jl"))
+include(joinpath(@__DIR__, "algorithms", "k-clique.jl"))
+include(joinpath(@__DIR__, "algorithms", "pagerank.jl"))
+include(joinpath(@__DIR__, "algorithms", "Experimental.jl"))
+include(joinpath(@__DIR__, "community-structure", "visualizations.jl"))
+include(joinpath(@__DIR__, "community-structure", "community_analysis.jl"))
+include(joinpath(@__DIR__, "graph-constructors", "graph-constructors.jl"))
 
 # ============================
 # EXPORTS
