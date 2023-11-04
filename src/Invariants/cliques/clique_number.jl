@@ -22,7 +22,7 @@ function compute(
     ::Type{CliqueNumber},
     g::AbstractGraph{T};
     optimizer=HiGHS.Optimizer,
-) where T <: Int
+) where T <: Integer
     h = complement(g)
     return compute(IndependenceNumber, h; optimizer=optimizer)
 end

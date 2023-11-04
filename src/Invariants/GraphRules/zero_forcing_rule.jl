@@ -8,12 +8,15 @@ function apply!(
 )
     changes_made = true
     iter = 0
-    V = vertices(g)
+
+    # The set of vertices.
+    V = Graphs.vertices(g)
+
     while changes_made && iter < max_iter
         changes_made = false
         for v in V
             if (v in blue)
-                white_neighbors = setdiff(neighbors(g, v), blue)
+                white_neighbors = setdiff(Graphs.neighbors(g, v), blue)
                 if length(white_neighbors) == 1
                     union!(blue, white_neighbors)
                     changes_made = true

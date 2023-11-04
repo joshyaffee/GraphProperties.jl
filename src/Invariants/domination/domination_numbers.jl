@@ -1,5 +1,5 @@
 """
-    compute(::Type{DominationNumber}, g::AbstractGraph; optimizer=HiGHS.Optimizer)})
+    compute(::Type{DominationNumber}, g::SimpleGraph; optimizer=HiGHS.Optimizer)})
 
 Return the [domination number](https://en.wikipedia.org/wiki/Dominating_set) of `g`.
 
@@ -26,15 +26,15 @@ julia> compute(DominationNumber, g)
 """
 function compute(
     ::Type{DominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumDominatingSet, g; optimizer=optimizer)
     return length(min_tds.nodes)
 end
 
 """
-    compute(::Type{TotalDominationNumber}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer)
+    compute(::Type{TotalDominationNumber}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer)
 
 Return the [total domination number](https://en.wikipedia.org/wiki/Total_dominating_set) of `g`.
 
@@ -60,9 +60,9 @@ julia> compute(TotalDominationNumber, g)
 """
 function compute(
     ::Type{TotalDominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumTotalDominatingSet, g; optimizer=optimizer)
     return length(min_tds.nodes)
 end
@@ -70,9 +70,9 @@ end
 
 function compute(
     ::Type{LocatingDominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumLocatingDominatingSet, g; optimizer=optimizer)
     return length(min_tds.nodes)
 end
@@ -80,15 +80,15 @@ end
 
 function compute(
     ::Type{PairedDominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumPairedDominatingSet, g; optimizer=optimizer)
     return length(min_tds.nodes)
 end
 
 """
-    compute(::Type{IndependentDominationNumber}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer)
+    compute(::Type{IndependentDominationNumber}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer)
 
 Return the [independent domination number](https://en.wikipedia.org/wiki/Independent_dominating_set) of `g`.
 
@@ -114,15 +114,15 @@ julia> compute(IndependentDominationNumber, g)
 """
 function compute(
     ::Type{IndependentDominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumIndependentDominatingSet, g; optimizer=optimizer)
     return length(min_tds.nodes)
 end
 
 """
-    compute(::Type{EdgeDominationNumber}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer)
+    compute(::Type{EdgeDominationNumber}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer)
 
 Return the [edge domination number](https://en.wikipedia.org/wiki/Edge_dominating_set) of `g`.
 
@@ -148,23 +148,23 @@ julia> compute(EdgeDominationNumber, g)
 """
 function compute(
     ::Type{EdgeDominationNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
     min_tds = compute(MinimumEdgeDominatingSet, g; optimizer=optimizer)
     return length(min_tds.edges)
 end
 
 """
-    compute(::Type{PowerDominationNumber}, g::AbstractGraph{T})
+    compute(::Type{PowerDominationNumber}, g::SimpleGraph{T})
 
 Return the [power domination number](https://en.wikipedia.org/wiki/Power_dominating_set) of `g`.
 
 """
 function compute(
     ::Type{PowerDominationNumber},
-    g::AbstractGraph{T}
-) where T <: Int
+    g::SimpleGraph{T}
+) where T <: Integer
     min_pds = compute(MinimumPowerDominatingSet, g)
     return length(min_pds.nodes)
 end

@@ -30,12 +30,13 @@ function compute(
     ::Type{MaximumClique},
     g::AbstractGraph{T};
     optimizer=HiGHS.Optimizer
-) where T
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
+    JuMP.set_silent(model)
 
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # Decision variable for each vertex.
     @variable(model, x[1:n], Bin)

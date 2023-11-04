@@ -1,7 +1,7 @@
 @doc raw"""
     function compute(
         ::Type{CliqueNumber},
-        g::AbstractGraph{T};
+        g::SimpleGraph{T};
         optimizer=Cbc.Optimizer,
     ) where T <: Integer
 
@@ -24,7 +24,7 @@ julia> compute(IndependenceNumber, g)
 """
 function compute(
     ::Type{IndependenceNumber},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer,
 ) where T <: Integer
     max_ind_set = compute(MaximumIndependentSet, g; optimizer=optimizer)

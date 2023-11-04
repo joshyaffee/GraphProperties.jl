@@ -9,7 +9,7 @@ function compute(
     ::Type{Order},
     g::AbstractGraph{T}
 ) where T <: Integer
-    return nv(g)
+    return Graphs.nv(g)
 end
 
 """
@@ -22,7 +22,7 @@ function compute(
     ::Type{Size},
     g::AbstractGraph{T}
 ) where T <: Integer
-    return ne(g)
+    return Graphs.ne(g)
 end
 
 """
@@ -33,9 +33,9 @@ Return the maximum degree of `g`.
 """
 function compute(
     ::Type{MaximumDegree},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
 ) where T <: Integer
-    return maximum(degree(g))
+    return maximum(Graphs.degree(g))
 end
 
 """
@@ -46,9 +46,9 @@ Return the minimum degree of `g`.
 """
 function compute(
     ::Type{MinimumDegree},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
  ) where T <: Integer
-    return minimum(degree(g))
+    return minimum(Graphs.degree(g))
 end
 
 """
@@ -59,9 +59,9 @@ Return the average degree of `g`.
 """
 function compute(
     ::Type{AverageDegree},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
 ) where T <: Integer
-    return mean(degree(g))
+    return mean(Graphs.degree(g))
 end
 
 """
@@ -72,9 +72,9 @@ Return the diameter of `g`.
 """
 function compute(
     ::Type{Diameter},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
 ) where T <: Integer
-    return diameter(g)
+    return Graphs.diameter(g)
 end
 
 """
@@ -85,14 +85,14 @@ Return the radius of `g`.
 """
 function compute(
     ::Type{Radius},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
 ) where T <: Integer
-    return radius(g)
+    return Graphs.radius(g)
 end
 
 function compute(
     ::Type{Girth},
-    g::AbstractGraph{T},
+    g::SimpleGraph{T},
 ) where T <: Integer
 
     shortest_cycle = Inf

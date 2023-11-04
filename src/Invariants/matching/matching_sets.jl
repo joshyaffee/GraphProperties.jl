@@ -1,6 +1,6 @@
 
 """
-    compute(::Type{MaximumMatching}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer) where T <: Integer
+    compute(::Type{MaximumMatching}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer) where T <: Integer
 
 Return a maximum matching of `g`.
 
@@ -28,7 +28,7 @@ julia> compute(MaximumMatching, g)
 """
 function compute(
     ::Type{MaximumMatching},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
 ) where T <: Integer
     # Instantiate the model.
@@ -36,10 +36,10 @@ function compute(
     JuMP.set_silent(model)
 
     # The number of vertices.
-    n = nv(g)
+    n = Graphs.nv(g)
 
     # The edge set of the graph.
-    E = edges(g)
+    E = Graphs.edges(g)
 
     # Decision variable for each edge.
     @variable(model, x[E], Bin)
@@ -49,7 +49,7 @@ function compute(
 
     # Constraints: Each vertex is incident to at most one matched edge
     for v in 1:n
-        incident_edges = [e for e in E if src(e) == v || dst(e) == v]
+        incident_edges = [e for e in E if Graphs.src(e) == v || Graphs.dst(e) == v]
         @constraint(model, sum(x[e] for e in incident_edges) <= 1)
     end
 

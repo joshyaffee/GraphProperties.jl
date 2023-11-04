@@ -23,7 +23,7 @@ The module allows for the computation of complex graph invariants and operations
 ```julia
 julia> using GraphProperties.Invariants
 
-julia> ind_number = compute(IndependenceNumber, my_graph)
+julia> α = compute(IndependenceNumber, my_graph)
 ```
 """
 module Invariants

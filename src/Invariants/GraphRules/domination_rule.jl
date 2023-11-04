@@ -4,6 +4,6 @@ function apply!(
     g::AbstractGraph,
 )
     for v in copy(target_set)  # use copy to avoid modifying set during iteration
-        union!(target_set, neighbors(g, v))
+        union!(target_set, Graphs.neighbors(g, v))
     end
 end

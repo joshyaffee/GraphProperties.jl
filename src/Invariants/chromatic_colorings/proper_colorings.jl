@@ -1,6 +1,6 @@
 function compute(
     ::Type{MinimumProperColoring},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer = HiGHS.Optimizer
 ) where T <: Integer
 
@@ -9,8 +9,8 @@ function compute(
     JuMP.set_silent(model)
 
     # Get the vertices and edges of `g`.
-    V = vertices(g)
-    E = edges(g)
+    V = Graphs.vertices(g)
+    E = Graphs.edges(g)
 
     # Decision variable for each vertex and color.
     @variable(model, x[V, V], Bin)
