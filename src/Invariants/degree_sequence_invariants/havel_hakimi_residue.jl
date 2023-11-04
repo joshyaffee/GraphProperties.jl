@@ -1,7 +1,7 @@
 
 function compute(
     ::Type{HavelHakimiResidue},
-    g::AbstractGraph{T}
+    g::SimpleGraph{T}
 ) where T <: Integer
 
     # Get the degree sequence of `g`.

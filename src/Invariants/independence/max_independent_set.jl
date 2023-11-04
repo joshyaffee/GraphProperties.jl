@@ -35,7 +35,7 @@ julia> compute(MaximumIndependentSet, g)
 """
 function compute(
     ::Type{MaximumIndependentSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer,
 ) where T <: Integer
 

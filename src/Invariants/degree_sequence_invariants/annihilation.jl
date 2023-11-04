@@ -8,8 +8,8 @@ Return the annihilation number of the graph `g`.
 """
 function compute(
     ::Type{AnnihilationNumber},
-    g::SimpleGraph,
-)
+    g::SimpleGraph{T},
+) where T <: Integer
     # Sort in non-decreasing order
     D = sort(degree(g))
 

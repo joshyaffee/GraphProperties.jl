@@ -30,7 +30,7 @@ function compute(
     ::Type{MaximumClique},
     g::AbstractGraph{T};
     optimizer=HiGHS.Optimizer
-) where T
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)

@@ -1,6 +1,6 @@
 
 """
-    compute(::Type{MaximumMatching}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer) where T <: Integer
+    compute(::Type{MaximumMatching}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer) where T <: Integer
 
 Return a maximum matching of `g`.
 
@@ -28,7 +28,7 @@ julia> compute(MaximumMatching, g)
 """
 function compute(
     ::Type{MaximumMatching},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
 ) where T <: Integer
     # Instantiate the model.

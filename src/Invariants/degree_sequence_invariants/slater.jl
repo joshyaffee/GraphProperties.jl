@@ -12,7 +12,7 @@ arXiv preprint arXiv:1611.02379, (2016)
 """
 function compute(
     alg::SubKDominationNumber,
-    g::AbstractGraph{T},
+    g::SimpleGraph{T},
 ) where T <: Integer
 
     # Sort in non-increasing order
@@ -39,8 +39,8 @@ Return the Slater invariant for the graph `g`.
 """
 function compute(
     ::Type{SlaterNumber},
-    g::AbstractGraph{T},
-) where T <: Int
+    g::SimpleGraph{T},
+) where T <: Integer
 
     return compute(SubKDominationNumber(1), g)
 end
@@ -56,7 +56,7 @@ R. Davila, "A note on sub-total domination in graphs", arXiv preprint arXiv:1701
 """
 function compute(
     ::Type{SubTotalDominationNumber},
-    g::AbstractGraph{T},
+    g::SimpleGraph{T},
 ) where T <: Integer
     D = sort(degree(g), rev=true)  # Sort in non-increasing order
     n = nv(g)

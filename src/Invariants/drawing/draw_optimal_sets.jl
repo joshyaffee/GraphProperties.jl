@@ -1,4 +1,7 @@
-function draw_optimal_set(g::AbstractGraph, optset::AbstractOptimalNodeSet)
+function draw_optimal_set(
+    g::AbstractGraph,
+    optset::AbstractOptimalNodeSet
+)
     # Create a default color array filled with blue for each node
     nodecolors = [colorant"lightblue" for _ in 1:nv(g)]
 
