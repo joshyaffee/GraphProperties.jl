@@ -98,4 +98,15 @@ using GraphProperties.Invariants
             @test compute(Girth, h) == 3
         end
     end
+
+    @testset "Diameter Tests" begin
+
+        @testset "Petersen Graph Tests" begin
+            @test compute(Diameter, g) == 2
+        end
+
+        @testset "Clique Graph Tests" begin
+            @test compute(Diameter, h) == 1
+        end
+    end
 end
