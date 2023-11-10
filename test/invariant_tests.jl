@@ -2,9 +2,7 @@ using Test
 using Graphs
 using GraphProperties.Invariants
 
-
 @testset "GraphProperties.Invariants.jl" begin
-
 
     # The Petersen graph.
     g = Graphs.PetersenGraph()
@@ -156,7 +154,7 @@ using GraphProperties.Invariants
                 [(5,4), (6,8), (7,2)]
             ]
             test_edge_array = compute(MinimumEdgeDominatingSet, g)
-            @test any([equals(test_edge_array.edges, true_edge_array) for true_edge_array in true_edge_array_set])
+            @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
 
         @testset "K4 Graph Tests" begin
@@ -166,7 +164,7 @@ using GraphProperties.Invariants
                 [edge1, edge2] for edge1 in edge_lst for edge2 in edge_lst if edge1 != edge2
             ]
             test_edge_array = compute(MinimumEdgeDominatingSet, h)
-            @test any([equals(test_edge_array.edges, true_edge_array) for true_edge_array in true_edge_array_set])
+            @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
         
         @testset "C5 Graph Tests" begin
@@ -176,13 +174,13 @@ using GraphProperties.Invariants
                 [edge1, edge2] for edge1 in edge_lst for edge2 in edge_lst if edge1[1] != edge2[1] && edge1[1] != edge2[2] && edge1[2] != edge2[1] && edge1[2] != edge2[2]
             ]
             test_edge_array = compute(MinimumEdgeDominatingSet, c5)
-            @test any([equals(test_edge_array.edges, true_edge_array) for true_edge_array in true_edge_array_set])
+            @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
 
         @testset "S22 Graph Tests" begin
             true_edge_array_set = [[(1,4)]]
             test_edge_array = compute(MinimumEdgeDominatingSet, s22)
-            @test any([equals(test_edge_array.edges, true_edge_array) for true_edge_array in true_edge_array_set])
+            @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
     
     end

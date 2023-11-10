@@ -485,6 +485,4 @@ export apply!
 export compute
 export draw_optimal_set
 
-export equals
-
 end

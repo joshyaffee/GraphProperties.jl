@@ -1,21 +1,56 @@
+
+"""
+    ==(
+        a::AbstractOptimalEdgeSet,
+        b::AbstractOptimalEdgeSet
+    )::Bool
+
+Determine if two sets of edges are equivalent in an undirected graph context.
+
+This method treats each edge as undirected, meaning the order of vertices in
+each edge tuple or `Graphs.SimpleGraphs.SimpleEdge` is ignored. Two sets of edges
+are considered equal if they contain the same pairs of vertices, regardless of
+the order in which the vertices appear in each edge.
+
+# Arguments
+- `a::AbstractOptimalEdgeSet`: The first set of edges to compare.
+- `b::AbstractOptimalEdgeSet`: The second set of edges to compare.
+
+# Returns
+- `true` if both sets of edges represent the same undirected connections, `false` otherwise.
+
+# Examples
+```julia
+julia> using Graphs.SimpleGraphs: SimpleEdge
+
+julia> using GraphProperties.Invariants
+
+julia> a = OptimalEdgeSet([SimpleEdge(1, 2), SimpleEdge(2, 3)])
+
+julia> b = OptimalEdgeSet([SimpleEdge(2, 1), SimpleEdge(3, 2)])
+
+julia> a == b
+true
+```
+"""
+
 using Graphs
-const SimpleInt64Edge = Vector{Graphs.SimpleGraphs.SimpleEdge{Int64}}
+import Base: ==
+using Graphs.SimpleGraphs: SimpleEdge
 
-"""
-equals method for undirected edges::Union{Vector{Tuple{Int, Int}}, Vector{Graphs.SimpleGraphs.SimpleEdge{Int64}}}
-"""
-function equals(
-    a::Union{Vector{Tuple{Int, Int}}, Vector{Graphs.SimpleGraphs.SimpleEdge{Int64}}},
-    b::Union{Vector{Tuple{Int, Int}}, Vector{Graphs.SimpleGraphs.SimpleEdge{Int64}}}
+# Define a helper function to normalize an edge.
+function _normalize_edge(edge)
+    edge isa Tuple && return (min(edge...), max(edge...))
+    return (min(edge.src, edge.dst), max(edge.src, edge.dst))
+end
+
+# override the equality operator for AbstractOptimalEdgeSet.
+function ==(
+    a::AbstractOptimalEdgeSet,
+    b::AbstractOptimalEdgeSet
 )
-
-    # Create a_set in a stadardized format.
-    isa(a, SimpleInt64Edge) && (a_set = Set([(min(e.src, e.dst), max(e.src, e.dst)) for e in a]))
-    !isa(a, SimpleInt64Edge) && (a_set = Set([(min(e[1], e[2]), max(e[1], e[2])) for e in a]))
-
-    # Create b_set in a stadardized format.
-    isa(b, SimpleInt64Edge) && (b_set = Set([(min(e.src, e.dst), max(e.src, e.dst)) for e in b]))
-    !isa(b, SimpleInt64Edge) && (b_set = Set([(min(e[1], e[2]), max(e[1], e[2])) for e in b]))
+    a_set = Set(_normalize_edge(edge) for edge in a.edges)
+    b_set = Set(_normalize_edge(edge) for edge in b.edges)
 
     return a_set == b_set
 end
