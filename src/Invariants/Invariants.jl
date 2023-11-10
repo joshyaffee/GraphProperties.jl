@@ -28,9 +28,12 @@ julia> α = compute(IndependenceNumber, my_graph)
 """
 module Invariants
 
+import Base: ==
+
 using Colors
 using Combinatorics
 using Graphs
+using Graphs.SimpleGraphs: SimpleEdge
 using GraphPlot
 using HiGHS
 using JuMP
@@ -414,6 +417,8 @@ include(joinpath(@__DIR__, "zero_forcing", "zero_forcing_number.jl"))
 
 include(joinpath(@__DIR__, "drawing", "draw_optimal_sets.jl"))
 
+include(joinpath(@__DIR__, "equality.jl"))
+
 # Exports
 export AbstractOptimalNodeSet
 export AbstractOptimalEdgeSet
@@ -482,6 +487,5 @@ export SubKDominationNumber
 export apply!
 export compute
 export draw_optimal_set
-
 
 end
