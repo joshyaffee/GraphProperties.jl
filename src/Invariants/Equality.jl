@@ -1,4 +1,13 @@
 
+using Graphs
+using Graphs.SimpleGraphs: SimpleEdge
+
+# Define a helper function to normalize an edge.
+function _normalize_edge(edge)
+    edge isa Tuple && return (min(edge...), max(edge...))
+    return (min(edge.src, edge.dst), max(edge.src, edge.dst))
+end
+
 """
     ==(
         a::AbstractOptimalEdgeSet,
@@ -33,18 +42,6 @@ julia> a == b
 true
 ```
 """
-
-using Graphs
-import Base: ==
-using Graphs.SimpleGraphs: SimpleEdge
-
-# Define a helper function to normalize an edge.
-function _normalize_edge(edge)
-    edge isa Tuple && return (min(edge...), max(edge...))
-    return (min(edge.src, edge.dst), max(edge.src, edge.dst))
-end
-
-# override the equality operator for AbstractOptimalEdgeSet.
 function ==(
     a::AbstractOptimalEdgeSet,
     b::AbstractOptimalEdgeSet

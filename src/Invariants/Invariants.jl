@@ -28,9 +28,12 @@ julia> α = compute(IndependenceNumber, my_graph)
 """
 module Invariants
 
+import Base: ==
+
 using Colors
 using Combinatorics
 using Graphs
+using Graphs.SimpleGraphs: SimpleEdge
 using GraphPlot
 using HiGHS
 using JuMP
