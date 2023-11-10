@@ -1,7 +1,4 @@
 
-using Graphs
-using Graphs.SimpleGraphs: SimpleEdge
-
 # Define a helper function to normalize an edge.
 function _normalize_edge(edge)
     edge isa Tuple && return (min(edge...), max(edge...))
