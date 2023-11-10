@@ -414,7 +414,7 @@ include(joinpath(@__DIR__, "zero_forcing", "zero_forcing_number.jl"))
 
 include(joinpath(@__DIR__, "drawing", "draw_optimal_sets.jl"))
 
-include(joinpath(@__DIR__, "Equality.jl"))
+include(joinpath(@__DIR__, "equality.jl"))
 
 # Exports
 export AbstractOptimalNodeSet
