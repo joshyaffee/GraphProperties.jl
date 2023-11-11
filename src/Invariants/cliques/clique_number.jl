@@ -8,7 +8,7 @@ Return the [clique number](https://en.wikipedia.org/wiki/Clique_problem) of
 Computes the independence number of the complement of `g`.
 
 ### Example
-```jldoctest
+```julia
 julia> using Graphs
 
 julia> g = path_graph(5)
@@ -18,11 +18,10 @@ julia> clique_number(g)
 2
 ```
 """
-function compute(
-    ::Type{CliqueNumber},
+function clique_number(
     g::AbstractGraph{T};
     optimizer=HiGHS.Optimizer,
 ) where T <: Integer
     h = complement(g)
-    return compute(IndependenceNumber, h; optimizer=optimizer)
+    return independence_number(h; optimizer=optimizer)
 end

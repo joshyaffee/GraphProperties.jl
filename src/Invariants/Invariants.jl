@@ -1,8 +1,10 @@
 """
     module Invariants
 
-The `Invariants` module provides functionalities for computing various graph invariants and optimal sets, such as cliques, colorings, dominations, and matchings.
-It includes advanced features for degree sequence invariants and graphical operations based on the rules defined within the module.
+The `Invariants` module provides functionalities for computing various graph invariants and
+optimal sets, such as cliques, colorings, dominations, and matchings. It includes advanced
+features for degree sequence invariants and graphical operations based on the rules defined
+within the module.
 
 # Exported Types
 - `AbstractOptimalNodeSet`: Represents sets of nodes that meet an optimality criterion.
@@ -17,30 +19,28 @@ It includes advanced features for degree sequence invariants and graphical opera
 - `draw_optimal_set`: Draws a graph with the optimal set highlighted.
 
 # Usage
-The module allows for the computation of complex graph invariants and operations through high-level functions and types. The types are used to represent the results of these computations, while the functions are used to perform them.
+The module allows for the computation of complex graph invariants and operations through
+high-level functions and types. The types are used to represent the results of these
+computations, while the functions are used to perform them.
 
 # Examples
 ```julia
-julia> using GraphProperties.Invariants
+julia> using GraphProperties.Invariants: compute, MaximumIndependentSet
 
-julia> α = compute(IndependenceNumber, my_graph)
+julia> α = compute(MaximumIndependentSet, my_graph)
 ```
 """
 module Invariants
 
 import Base: ==
 
-using Colors
 using Combinatorics
 using Graphs
 using Graphs.SimpleGraphs: SimpleEdge
-using GraphPlot
+using GraphProperties.GraphRules: apply!, DominationRule, ZeroForcingRule
 using HiGHS
 using JuMP
 
-# Include the graph operation rules module.
-include(joinpath(@__DIR__, "GraphRules", "GraphRules.jl", ))
-using .GraphRules
 
 ######################### Define Primary Abstract Types #################################
 
@@ -391,7 +391,7 @@ SubKDominationNumber(;k=1) = SubKDominationNumber(k)
 
 # Include files from src.
 
-include(joinpath(@__DIR__, "basics", "from_graphs.jl", ))
+# include(joinpath(@__DIR__, "basics", "from_graphs.jl", ))
 
 include(joinpath(@__DIR__, "cliques", "maximimum_clique.jl", ))
 include(joinpath(@__DIR__, "cliques", "clique_number.jl", ))
@@ -399,9 +399,9 @@ include(joinpath(@__DIR__, "cliques", "clique_number.jl", ))
 include(joinpath(@__DIR__, "chromatic_colorings", "proper_colorings.jl", ))
 include(joinpath(@__DIR__, "chromatic_colorings", "chromatic_number.jl", ))
 
-include(joinpath(@__DIR__, "degree_sequence_invariants", "havel_hakimi_residue.jl", ))
-include(joinpath(@__DIR__, "degree_sequence_invariants", "slater.jl", ))
-include(joinpath(@__DIR__, "degree_sequence_invariants", "annihilation.jl", ))
+# include(joinpath(@__DIR__, "degree_sequence_invariants", "havel_hakimi_residue.jl", ))
+# include(joinpath(@__DIR__, "degree_sequence_invariants", "slater.jl", ))
+# include(joinpath(@__DIR__, "degree_sequence_invariants", "annihilation.jl", ))
 
 include(joinpath(@__DIR__, "domination", "minimum_dominating_sets.jl", ))
 include(joinpath(@__DIR__, "domination", "domination_numbers.jl", ))
@@ -415,8 +415,6 @@ include(joinpath(@__DIR__, "matching", "matching_number.jl", ))
 include(joinpath(@__DIR__, "zero_forcing", "minimum_zero_forcing_set.jl", ))
 include(joinpath(@__DIR__, "zero_forcing", "zero_forcing_number.jl", ))
 
-include(joinpath(@__DIR__, "drawing", "draw_optimal_sets.jl", ))
-
 include(joinpath(@__DIR__, "equality.jl", ))
 
 # Exports
@@ -424,68 +422,54 @@ export AbstractOptimalNodeSet
 export AbstractOptimalEdgeSet
 export AbstractOptimalNodeColoring
 export AbstractOptimalEdgeColoring
-export AbstractOptimalCardinality
-export DegreeSequenceInvariant
-export GraphRule
-
-export Order
-export Size
-export Girth
-
-export MaximumDegree
-export MinimumDegree
-export AverageDegree
-
-export Radius
-export Diameter
 
 export MaximumIndependentSet
 export IndependenceNumber
+export independence_number
 
 export MaximumClique
 export CliqueNumber
+export clique_number
 
 export MinimumProperColoring
 export ChromaticNumber
+export chromatic_number
 
 export MinimumDominatingSet
 export DominationNumber
-export DominationRule
+export domination_number
 
 export MinimumTotalDominatingSet
 export TotalDominationNumber
+export total_domination_number
 
-export MinimumLocatingDominatingSet
-export LocatingDominationNumber
+#TODO Implement these
+# export MinimumLocatingDominatingSet
+# export LocatingDominationNumber
 
-export MinimumPairedDominatingSet
-export PairedDominationNumber
+# export MinimumPairedDominatingSet
+# export PairedDominationNumber
 
 export MinimumPowerDominatingSet
 export PowerDominationNumber
+export power_domination_number
 
 export MinimumIndependentDominatingSet
 export IndependentDominationNumber
+export independent_domination_number
 
 export MinimumEdgeDominatingSet
 export EdgeDominationNumber
+export edge_domination_number
 
 export MaximumMatching
 export MatchingNumber
+export matching_number
 
 export MinimumZeroForcingSet
 export ZeroForcingNumber
-export ZeroForcingRule
+export zero_forcing_number
 
-export HavelHakimiRule
-export HavelHakimiResidue
-export SlaterNumber
-export AnnihilationNumber
-export SubTotalDominationNumber
-export SubKDominationNumber
-
-export apply!
 export compute
-export draw_optimal_set
 
 end

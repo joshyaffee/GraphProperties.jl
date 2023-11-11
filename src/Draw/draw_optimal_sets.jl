@@ -1,4 +1,4 @@
-function draw_optimal_set(
+function draw(
     g::AbstractGraph,
     optset::AbstractOptimalNodeSet
 )
@@ -21,7 +21,7 @@ function draw_optimal_set(
     return plot
 end
 
-function draw_optimal_set(
+function draw(
     g::AbstractGraph,
     optset::AbstractOptimalEdgeSet
 )

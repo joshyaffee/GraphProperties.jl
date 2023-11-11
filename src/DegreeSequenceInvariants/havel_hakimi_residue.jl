@@ -1,8 +1,5 @@
 
-function compute(
-    ::Type{HavelHakimiResidue},
-    g::SimpleGraph{T}
-) where T <: Integer
+function havel_hakimi_residue(g::SimpleGraph{T},) where T <: Integer
 
     # Get the degree sequence of `g`.
     sequence = Graphs.degree(g)

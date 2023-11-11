@@ -1,7 +1,7 @@
 
 
 """
-    compute(::Type{MatchingNumber}, g::SimpleGraph; optimizer=HiGHS.Optimizer)
+    matching_number(g::SimpleGraph; optimizer=HiGHS.Optimizer)
 
 Return the [matching number](https://en.wikipedia.org/wiki/Matching_(graph_theory)) of `g`.
 
@@ -17,12 +17,11 @@ julia> using GraphInvariants
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
-julia> compute(MatchingNumber, g)
+julia> matching_number(g)
 2
 ```
 """
-function compute(
-    ::Type{MatchingNumber},
+function matching_number(
     g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
 ) where T <: Integer
