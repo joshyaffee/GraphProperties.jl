@@ -1,6 +1,3 @@
-using Test
-using Graphs
-using GraphProperties.Invariants
 
 @testset "GraphProperties.Invariants.jl" begin
 
@@ -157,56 +154,56 @@ using GraphProperties.Invariants
             @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
 
-        @testset "K4 Graph Tests" begin  
-            # any two distinct edges are valid  
-            edge_lst = [(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)]  
-            true_edge_array_set = [  
-                [edge1, edge2] for edge1 in edge_lst 
-                for edge2 in edge_lst 
-                    if edge1 != edge2  
-            ]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, h)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end  
-        
-        @testset "C5 Graph Tests" begin  
-            # any two edges that share no vertices are valid  
-            edge_lst = [  
-                (1,2), (1,3), (1,4), (1,5), (2,3), 
-                (2,4), (2,5), (3,4), (3,5), (4,5)  
-            ]  
-            true_edge_array_set = [  
-                [edge1, edge2] for edge1 in edge_lst 
-                for edge2 in edge_lst 
-                    if edge1[1] != edge2[1] 
-                        && edge1[1] != edge2[2] 
-                        && edge1[2] != edge2[1] 
-                        && edge1[2] != edge2[2]  
-            ]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, c5)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end  
+        @testset "K4 Graph Tests" begin
+            # any two distinct edges are valid
+            edge_lst = [(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)]
+            true_edge_array_set = [
+                [edge1, edge2] for edge1 in edge_lst
+                for edge2 in edge_lst
+                    if edge1 != edge2
+            ]
+            test_edge_array = compute(MinimumEdgeDominatingSet, h)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
 
-        @testset "S22 Graph Tests" begin  
-            true_edge_array_set = [[(1,4)]]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, s22)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end 
-    
+        @testset "C5 Graph Tests" begin
+            # any two edges that share no vertices are valid
+            edge_lst = [
+                (1,2), (1,3), (1,4), (1,5), (2,3),
+                (2,4), (2,5), (3,4), (3,5), (4,5)
+            ]
+            true_edge_array_set = [
+                [edge1, edge2] for edge1 in edge_lst
+                for edge2 in edge_lst
+                    if edge1[1] != edge2[1]
+                        && edge1[1] != edge2[2]
+                        && edge1[2] != edge2[1]
+                        && edge1[2] != edge2[2]
+            ]
+            test_edge_array = compute(MinimumEdgeDominatingSet, c5)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
+
+        @testset "S22 Graph Tests" begin
+            true_edge_array_set = [[(1,4)]]
+            test_edge_array = compute(MinimumEdgeDominatingSet, s22)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
+
     end
 end
