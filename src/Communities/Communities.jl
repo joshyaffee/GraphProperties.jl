@@ -315,7 +315,6 @@ struct KarateClub <: CommunityGraph end
 # MODULE INCLUDES
 # ============================
 
-include(joinpath(@__DIR__, "GraphIO", "GraphIO.jl"))
 include(joinpath(@__DIR__, "algorithms", "label-propagation.jl"))
 include(joinpath(@__DIR__, "algorithms", "fast-label-propagation.jl"))
 include(joinpath(@__DIR__, "algorithms", "fast-weighted-label-propagation.jl"))

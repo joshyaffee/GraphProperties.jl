@@ -9,6 +9,10 @@ using .Basics
 include(joinpath(@__DIR__, "GraphRules", "GraphRules.jl"))
 using .GraphRules
 
+# Import the GraphIO module
+include(joinpath(@__DIR__, "GraphIO", "GraphIO.jl"))
+using .GraphIO
+
 # Import the Degree Sequence Invariants module
 include(joinpath(@__DIR__, "DegreeSequenceInvariants", "DegreeSequenceInvariants.jl"))
 using .DegreeSequenceInvariants
@@ -18,8 +22,8 @@ include(joinpath(@__DIR__, "Invariants", "Invariants.jl"))
 using .Invariants
 
 # Import the Communities module
-# include(joinpath(@__DIR__, "Communities", "Communities.jl"))
-# using .Communities
+include(joinpath(@__DIR__, "Communities", "Communities.jl"))
+using .Communities
 
 # Import the Draw module
 include(joinpath(@__DIR__, "Draw", "Draw.jl"))
@@ -99,5 +103,8 @@ export matching_number
 export MinimumZeroForcingSet
 export ZeroForcingNumber
 export zero_forcing_number
+
+export load_edgelist
+export write_edgelist!
 
 end
