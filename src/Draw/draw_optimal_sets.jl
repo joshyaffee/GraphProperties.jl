@@ -1,13 +1,15 @@
 function draw(
     g::AbstractGraph,
-    optset::AbstractOptimalNodeSet
+    optset::AbstractOptimalNodeSet,
 )
     # Create a default color array filled with blue for each node
-    nodecolors = [colorant"lightblue" for _ in 1:Graphs.nv(g)]
+    nodecolors = [
+        Colors.@colorant_str("lightblue") for _ in 1:Graphs.nv(g)
+    ]
 
     # Update the color for nodes that are in the optimal set
     for node in optset.nodes
-        nodecolors[node] = colorant"lightgreen"
+        nodecolors[node] = Colors.@colorant_str("lightgreen")
     end
 
     # Plot the graph with the color scheme
@@ -23,16 +25,18 @@ end
 
 function draw(
     g::AbstractGraph,
-    optset::AbstractOptimalEdgeSet
+    optset::AbstractOptimalEdgeSet,
 )
 
     # initialize array of colors for each edge
-    edgecolors = [colorant"lightblue" for _ in 1:Graphs.ne(g)]
+    edgecolors = [
+        Colors.@colorant_str("lightblue") for _ in 1:Graphs.ne(g)
+    ]
 
     # Update the color for edges that are in the optimal set using enumeration of edges
     for (i, edge) in enumerate(edges(g))
         if edge in optset.edges
-            edgecolors[i] = colorant"lightgreen"
+            edgecolors[i] = Colors.@colorant_str("red")
         end
     end
 
