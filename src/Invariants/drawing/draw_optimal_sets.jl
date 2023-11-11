@@ -11,14 +11,14 @@ function draw_optimal_set(
     end
 
     # Plot the graph with the color scheme
-    gplot(
+    plot = gplot(
         g,
         nodefillc=nodecolors,
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
 
-    return nothing
+    return plot
 end
 
 function draw_optimal_set(
@@ -37,12 +37,12 @@ function draw_optimal_set(
     end
 
     # Plot the graph with the color scheme
-    gplot(
+    plot = gplot(
         g,
         edgestrokec=edgecolors,
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
 
-    return nothing
+    return plot
 end
