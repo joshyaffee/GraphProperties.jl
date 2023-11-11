@@ -1,7 +1,10 @@
 
 
 """
-    compute(::SubKDominationNumber, g::AbstractGraph)
+    function sub_k_domination_number(
+        g::SimpleGraph{T};
+        k::Integer = 1,
+    ) where T <: Integer
 
 Return the sub-k-domination number of the graph `g`.
 
@@ -10,9 +13,9 @@ Return the sub-k-domination number of the graph `g`.
 D. Amos et al., "The sub-k-domination number of a graph with applications to k-domination",
 arXiv preprint arXiv:1611.02379, (2016)
 """
-function compute(
-    alg::SubKDominationNumber,
-    g::SimpleGraph{T},
+function sub_k_domination_number(
+    g::SimpleGraph{T};
+    k::Integer = 1,
 ) where T <: Integer
 
     # Sort in non-increasing order
@@ -25,28 +28,27 @@ function compute(
     # the sum of the degrees of the first `t` vertices in the sorted
     # degree sequence with t is at least `n`. Scaling by 1/k
     for i in 1:n
-        if i + sum(D[1:i]) / alg.k >= n
-            return i
-        end
+        i + sum(D[1:i]) / k >= n && return i
     end
+
     return nothing
 end
 
 """
-    compute(::Type{SlaterNumber}, g::AbstractGraph)
+    slater_number(g::SimpleGraph{T},) where T <: Integer
 
 Return the Slater invariant for the graph `g`.
 """
-function compute(
-    ::Type{SlaterNumber},
-    g::SimpleGraph{T},
-) where T <: Integer
+function slater_number(g::SimpleGraph{T},) where T <: Integer
 
-    return compute(SubKDominationNumber(1), g)
+    return sub_k_domination_number(g; k=1)
 end
 
 """
-    sub_total_domination_number(g::AbstractGraph)
+    sub_total_k_domination_number(
+        g::SimpleGraph{T};
+        k::Integer = 1,
+    ) where T <: Integer
 
 Return the sub-total domination number of the graph `g`.
 
@@ -54,17 +56,17 @@ Return the sub-total domination number of the graph `g`.
 
 R. Davila, "A note on sub-total domination in graphs", arXiv preprint arXiv:1701.07811, (2017)
 """
-function compute(
-    ::Type{SubTotalDominationNumber},
-    g::SimpleGraph{T},
+function sub_total_k_domination_number(
+    g::SimpleGraph{T};
+    k::Integer = 1,
 ) where T <: Integer
+
     D = sort(Graphs.degree(g), rev=true)  # Sort in non-increasing order
     n = Graphs.nv(g)
+
     for i in 1:n
-        if sum(D[1:i]) >= n
-            return i
-        end
+        1/k*sum(D[1:i]) >= n && return i
     end
+
     return nothing
 end
-

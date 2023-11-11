@@ -2,10 +2,11 @@
 
 function apply!(
     ::Type{ZeroForcingRule},
-    blue::Set{Int},
-    g::AbstractGraph;
+    blue::Set{T},
+    g::SimpleGraph{T};
     max_iter=100_000 # this limits the number of applications of the rule
-)
+) where T <: Integer
+
     changes_made = true
     iter = 0
 

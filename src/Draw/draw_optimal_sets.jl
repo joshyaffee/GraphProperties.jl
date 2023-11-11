@@ -1,4 +1,4 @@
-function draw_optimal_set(
+function draw(
     g::AbstractGraph,
     optset::AbstractOptimalNodeSet
 )
@@ -11,15 +11,17 @@ function draw_optimal_set(
     end
 
     # Plot the graph with the color scheme
-    gplot(
+    plot = gplot(
         g,
         nodefillc=nodecolors,
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
+
+    return plot
 end
 
-function draw_optimal_set(
+function draw(
     g::AbstractGraph,
     optset::AbstractOptimalEdgeSet
 )
@@ -35,10 +37,12 @@ function draw_optimal_set(
     end
 
     # Plot the graph with the color scheme
-    gplot(
+    plot = gplot(
         g,
         edgestrokec=edgecolors,
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
+
+    return plot
 end

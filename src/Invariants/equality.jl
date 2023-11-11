@@ -1,9 +1,7 @@
 
-# Define a helper function to normalize an edge.
-function _normalize_edge(edge)
-    edge isa Tuple && return (min(edge...), max(edge...))
-    return (min(edge.src, edge.dst), max(edge.src, edge.dst))
-end
+# Define a helper function to "normalize" an edge.
+_normalize_edge(edge::Tuple) = (min(edge...), max(edge...))
+_normalize_edge(edge::SimpleEdge) = (min(edge.src, edge.dst), max(edge.src, edge.dst))
 
 """
     ==(

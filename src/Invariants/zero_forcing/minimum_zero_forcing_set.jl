@@ -16,10 +16,8 @@ function compute(
         for subset in Combinatorics.combinations(1:n, size)
             blue = Set(subset)
             apply!(ZeroForcingRule, blue, g; max_iter=n)
-            if length(blue) == n
-                return MinimumZeroForcingSet(subset)
-            end
+            length(blue) == n && return MinimumZeroForcingSet(subset)
         end
     end
-    return []
+    error("Could not find a minimum zero forcing set for $g")
 end

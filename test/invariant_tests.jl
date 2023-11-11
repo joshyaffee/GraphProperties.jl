@@ -1,6 +1,3 @@
-using Test
-using Graphs
-using GraphProperties.Invariants
 
 @testset "GraphProperties.Invariants.jl" begin
 
@@ -51,24 +48,24 @@ using GraphProperties.Invariants
         @testset "Petersen Graph Tests" begin
             max_ind_set = compute(MaximumIndependentSet, g)
             @test !isempty(max_ind_set.nodes)
-            @test compute(IndependenceNumber, g) == 4
+            @test independence_number(g) == 4
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(IndependenceNumber, h) == 1
+            @test independence_number(h) == 1
         end
     end
 
     @testset "Clique Tests" begin
 
         @testset "Petersen Graph Tests" begin
-            @test compute(CliqueNumber, g) == 2
+            @test clique_number(g) == 2
         end
 
         @testset "Clique Graph Tests" begin
             max_clique = compute(MaximumClique, h)
             @test !isempty(max_clique.nodes)
-            @test compute(CliqueNumber, h) == 4
+            @test clique_number(h) == 4
         end
 
     end
@@ -78,11 +75,11 @@ using GraphProperties.Invariants
         @testset "Petersen Graph Tests" begin
             min_dom_set = compute(MinimumDominatingSet, g)
             @test !isempty(min_dom_set.nodes)
-            @test compute(DominationNumber, g) == 3
+            @test domination_number(g) == 3
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(DominationNumber, h) == 1
+            @test domination_number(h) == 1
         end
 
     end
@@ -92,55 +89,55 @@ using GraphProperties.Invariants
         @testset "Petersen Graph Tests" begin
             min_tot_dom_set = compute(MinimumTotalDominatingSet, g)
             @test !isempty(min_tot_dom_set.nodes)
-            @test compute(TotalDominationNumber, g) == 4
+            @test total_domination_number(g) == 4
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(TotalDominationNumber, h) == 2
+            @test total_domination_number(h) == 2
         end
     end
 
     @testset "Zero Forcing Tests" begin
 
         @testset "Petersen Graph Tests" begin
-            @test compute(ZeroForcingNumber, g) == 5
+            @test zero_forcing_number(g) == 5
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(ZeroForcingNumber, h) == 3
+            @test zero_forcing_number(h) == 3
         end
     end
 
     @testset "Chromatic Number Tests" begin
 
         @testset "Petersen Graph Tests" begin
-            @test compute(ChromaticNumber, g) == 3
+            @test chromatic_number(g) == 3
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(ChromaticNumber, h) == 4
+            @test chromatic_number(h) == 4
         end
     end
 
     @testset "Girth" begin
 
         @testset "Petersen Graph Tests" begin
-            @test compute(Girth, g) == 5
+            @test girth(g) == 5
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(Girth, h) == 3
+            @test girth(h) == 3
         end
     end
 
     @testset "Diameter Tests" begin
 
         @testset "Petersen Graph Tests" begin
-            @test compute(Diameter, g) == 2
+            @test GraphProperties.diameter(g) == 2
         end
 
         @testset "Clique Graph Tests" begin
-            @test compute(Diameter, h) == 1
+            @test GraphProperties.diameter(h) == 1
         end
     end
 
@@ -157,56 +154,56 @@ using GraphProperties.Invariants
             @test any([test_edge_array == MinimumEdgeDominatingSet(true_edge_array) for true_edge_array in true_edge_array_set])
         end
 
-        @testset "K4 Graph Tests" begin  
-            # any two distinct edges are valid  
-            edge_lst = [(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)]  
-            true_edge_array_set = [  
-                [edge1, edge2] for edge1 in edge_lst 
-                for edge2 in edge_lst 
-                    if edge1 != edge2  
-            ]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, h)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end  
-        
-        @testset "C5 Graph Tests" begin  
-            # any two edges that share no vertices are valid  
-            edge_lst = [  
-                (1,2), (1,3), (1,4), (1,5), (2,3), 
-                (2,4), (2,5), (3,4), (3,5), (4,5)  
-            ]  
-            true_edge_array_set = [  
-                [edge1, edge2] for edge1 in edge_lst 
-                for edge2 in edge_lst 
-                    if edge1[1] != edge2[1] 
-                        && edge1[1] != edge2[2] 
-                        && edge1[2] != edge2[1] 
-                        && edge1[2] != edge2[2]  
-            ]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, c5)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end  
+        @testset "K4 Graph Tests" begin
+            # any two distinct edges are valid
+            edge_lst = [(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)]
+            true_edge_array_set = [
+                [edge1, edge2] for edge1 in edge_lst
+                for edge2 in edge_lst
+                    if edge1 != edge2
+            ]
+            test_edge_array = compute(MinimumEdgeDominatingSet, h)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
 
-        @testset "S22 Graph Tests" begin  
-            true_edge_array_set = [[(1,4)]]  
-            test_edge_array = compute(MinimumEdgeDominatingSet, s22)  
-            @test any(  
-                [  
-                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array) 
-                    for true_edge_array in true_edge_array_set  
-                ]  
-            )  
-        end 
-    
+        @testset "C5 Graph Tests" begin
+            # any two edges that share no vertices are valid
+            edge_lst = [
+                (1,2), (1,3), (1,4), (1,5), (2,3),
+                (2,4), (2,5), (3,4), (3,5), (4,5)
+            ]
+            true_edge_array_set = [
+                [edge1, edge2] for edge1 in edge_lst
+                for edge2 in edge_lst
+                    if edge1[1] != edge2[1]
+                        && edge1[1] != edge2[2]
+                        && edge1[2] != edge2[1]
+                        && edge1[2] != edge2[2]
+            ]
+            test_edge_array = compute(MinimumEdgeDominatingSet, c5)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
+
+        @testset "S22 Graph Tests" begin
+            true_edge_array_set = [[(1,4)]]
+            test_edge_array = compute(MinimumEdgeDominatingSet, s22)
+            @test any(
+                [
+                    test_edge_array == MinimumEdgeDominatingSet(true_edge_array)
+                    for true_edge_array in true_edge_array_set
+                ]
+            )
+        end
+
     end
 end

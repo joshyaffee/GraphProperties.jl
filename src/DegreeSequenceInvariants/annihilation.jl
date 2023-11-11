@@ -1,13 +1,10 @@
 
 """
-    compute(::Type{AnnihilationNumber}, g::SimpleGraph)
+    annihilation_number(g::SimpleGraph)
 
 Return the annihilation number of the graph `g`.
 """
-function compute(
-    ::Type{AnnihilationNumber},
-    g::SimpleGraph{T},
-) where T <: Integer
+function annihilation_number(g::SimpleGraph{T},) where T <: Integer
     # Sort in non-decreasing order
     D = sort(Graphs.degree(g))
 
@@ -18,9 +15,8 @@ function compute(
     n = Graphs.nv(g)
 
     for i in reverse(1:n)
-        if sum(D[1:i]) <= m
-            return i
-        end
+        sum(D[1:i]) <= m && return i
     end
+
     return nothing
 end
