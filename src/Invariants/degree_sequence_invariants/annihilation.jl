@@ -18,9 +18,8 @@ function compute(
     n = Graphs.nv(g)
 
     for i in reverse(1:n)
-        if sum(D[1:i]) <= m
-            return i
-        end
+        isum(D[1:i]) <= m && return i
     end
+
     return nothing
 end

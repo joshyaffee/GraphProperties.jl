@@ -39,7 +39,7 @@ using HiGHS
 using JuMP
 
 # Include the graph operation rules module.
-include(joinpath(@__DIR__, "GraphRules", "GraphRules.jl"))
+include(joinpath(@__DIR__, "GraphRules", "GraphRules.jl", ))
 using .GraphRules
 
 ######################### Define Primary Abstract Types #################################
@@ -391,33 +391,33 @@ SubKDominationNumber(;k=1) = SubKDominationNumber(k)
 
 # Include files from src.
 
-include(joinpath(@__DIR__, "basics", "from_graphs.jl"))
+include(joinpath(@__DIR__, "basics", "from_graphs.jl", ))
 
-include(joinpath(@__DIR__, "cliques", "maximimum_clique.jl"))
-include(joinpath(@__DIR__, "cliques", "clique_number.jl"))
+include(joinpath(@__DIR__, "cliques", "maximimum_clique.jl", ))
+include(joinpath(@__DIR__, "cliques", "clique_number.jl", ))
 
-include(joinpath(@__DIR__, "chromatic_colorings", "proper_colorings.jl"))
-include(joinpath(@__DIR__, "chromatic_colorings", "chromatic_number.jl"))
+include(joinpath(@__DIR__, "chromatic_colorings", "proper_colorings.jl", ))
+include(joinpath(@__DIR__, "chromatic_colorings", "chromatic_number.jl", ))
 
-include(joinpath(@__DIR__, "degree_sequence_invariants", "havel_hakimi_residue.jl"))
-include(joinpath(@__DIR__, "degree_sequence_invariants", "slater.jl"))
-include(joinpath(@__DIR__, "degree_sequence_invariants", "annihilation.jl"))
+include(joinpath(@__DIR__, "degree_sequence_invariants", "havel_hakimi_residue.jl", ))
+include(joinpath(@__DIR__, "degree_sequence_invariants", "slater.jl", ))
+include(joinpath(@__DIR__, "degree_sequence_invariants", "annihilation.jl", ))
 
-include(joinpath(@__DIR__, "domination", "minimum_dominating_sets.jl"))
-include(joinpath(@__DIR__, "domination", "domination_numbers.jl"))
+include(joinpath(@__DIR__, "domination", "minimum_dominating_sets.jl", ))
+include(joinpath(@__DIR__, "domination", "domination_numbers.jl", ))
 
-include(joinpath(@__DIR__, "independence", "max_independent_set.jl"))
-include(joinpath(@__DIR__, "independence", "independence_number.jl"))
+include(joinpath(@__DIR__, "independence", "max_independent_set.jl", ))
+include(joinpath(@__DIR__, "independence", "independence_number.jl", ))
 
-include(joinpath(@__DIR__, "matching", "matching_sets.jl"))
-include(joinpath(@__DIR__, "matching", "matching_number.jl"))
+include(joinpath(@__DIR__, "matching", "matching_sets.jl", ))
+include(joinpath(@__DIR__, "matching", "matching_number.jl", ))
 
-include(joinpath(@__DIR__, "zero_forcing", "minimum_zero_forcing_set.jl"))
-include(joinpath(@__DIR__, "zero_forcing", "zero_forcing_number.jl"))
+include(joinpath(@__DIR__, "zero_forcing", "minimum_zero_forcing_set.jl", ))
+include(joinpath(@__DIR__, "zero_forcing", "zero_forcing_number.jl", ))
 
-include(joinpath(@__DIR__, "drawing", "draw_optimal_sets.jl"))
+include(joinpath(@__DIR__, "drawing", "draw_optimal_sets.jl", ))
 
-include(joinpath(@__DIR__, "equality.jl"))
+include(joinpath(@__DIR__, "equality.jl", ))
 
 # Exports
 export AbstractOptimalNodeSet

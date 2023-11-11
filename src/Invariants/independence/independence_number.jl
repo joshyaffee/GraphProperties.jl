@@ -27,6 +27,8 @@ function compute(
     g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer,
 ) where T <: Integer
+
     max_ind_set = compute(MaximumIndependentSet, g; optimizer=optimizer)
+
     return length(max_ind_set.nodes)
 end

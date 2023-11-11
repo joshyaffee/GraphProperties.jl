@@ -17,6 +17,8 @@ function draw_optimal_set(
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
+
+    return nothing
 end
 
 function draw_optimal_set(
@@ -41,4 +43,6 @@ function draw_optimal_set(
         nodelabel=Graphs.vertices(g),
         layout=stressmajorize_layout
     )
+
+    return nothing
 end

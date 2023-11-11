@@ -26,8 +26,9 @@ julia> D
 
 function apply!(
     ::Type{HavelHakimiRule},
-    sequence::Vector{Int}
-)
+    sequence::Vector{T}
+) where T <: Integer
+
     # Base case: if sequence is all zeros, return false
     # meaning we cannot apply the rule again to the sequence
     all(d == 0 for d in sequence) && return false
@@ -96,9 +97,10 @@ julia> eliminations
 """
 function apply!(
     ::Type{HavelHakimiRule},
-    sequence::Vector{Int},
-    eliminations::Vector{Int}
-)
+    sequence::Vector{T},
+    eliminations::Vector{T}
+) where T <: Integer
+
     # If sequence is all zeros, add these zeros to
     # the eliminations vector and returr false meaning
     # we cannot apply the rule again to the sequence
@@ -106,6 +108,7 @@ function apply!(
         for _ in eachindex(sequence)
             push!(elimnations, 0)
         end
+
         return true
     end
 

@@ -1,6 +1,10 @@
 
 """
-    compute(::Type{MinimumDominatingSet}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer)
+    compute(
+        ::Type{MinimumDominatingSet},
+        g::AbstractGraph{T};
+        optimizer=HiGHS.Optimizer
+    ) where T <: Integer
 
 Return a minimum dominating set of `g`.
 
@@ -29,9 +33,9 @@ julia> compute(MinimumDominatingSet, g)
 """
 function compute(
     ::Type{MinimumDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -62,7 +66,11 @@ function compute(
 end
 
 """
-    compute(::Type{MinimumTotalDominatingSet}, g::AbstractGraph{T}; optimizer=HiGHS.Optimizer)
+    compute(
+        ::Type{MinimumTotalDominatingSet},
+        g::SimpleGraph{T};
+        optimizer=HiGHS.Optimizer
+    ) where T <: Integer
 
 Return a minimum total dominating set of `g`.
 
@@ -92,9 +100,9 @@ julia> compute(MinimumTotalDominatingSet, g)
 """
 function compute(
     ::Type{MinimumTotalDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -126,9 +134,9 @@ end
 
 function compute(
     ::Type{MinimumLocatingDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -168,9 +176,9 @@ end
 
 function compute(
     ::Type{MinimumPairedDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -211,9 +219,9 @@ end
 
 function compute(
     ::Type{MinimumIndependentDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -255,9 +263,9 @@ end
 
 function compute(
     ::Type{MinimumEdgeDominatingSet},
-    g::AbstractGraph{T};
+    g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
-) where T <: Int
+) where T <: Integer
 
     # Instantiate the model.
     model = Model(optimizer)
@@ -297,15 +305,15 @@ end
 
 
 """
-    compute(::Type{MinimumZeroForcingSet}, g::AbstractGraph)
+    compute(::Type{MinimumZeroForcingSet}, g::SimpleGraph)
 
 Return a minimum zero forcing set of `g`.
 
 """
 function compute(
     ::Type{MinimumPowerDominatingSet},
-    g::AbstractGraph{T}
-) where T <: Int
+    g::SimpleGraph{T}
+) where T <: Integer
 
     # The number of vertices.
     n = Graphs.nv(g)
@@ -315,11 +323,8 @@ function compute(
             blue = Set(subset)
             apply!(DominationRule, blue, g)
             apply!(ZeroForcingRule, blue, g; max_iter=n)
-            if length(blue) == n
-                return MinimumPowerDominatingSet(subset)
-            end
+            length(blue) == n && return MinimumPowerDominatingSet(subset)
         end
     end
     return []
 end
-

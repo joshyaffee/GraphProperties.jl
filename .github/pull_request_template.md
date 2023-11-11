@@ -1,6 +1,6 @@
-# Pull Request Checklist
+# Description
 
-Thank you for contributing to `GraphProperties.jl`!
+
 
 ## Documentation and Style
 

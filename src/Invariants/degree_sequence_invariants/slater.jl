@@ -1,7 +1,7 @@
 
 
 """
-    compute(::SubKDominationNumber, g::AbstractGraph)
+    compute(::SubKDominationNumber, g::SimpleGraph{T}) where T <: Integer
 
 Return the sub-k-domination number of the graph `g`.
 
@@ -25,15 +25,14 @@ function compute(
     # the sum of the degrees of the first `t` vertices in the sorted
     # degree sequence with t is at least `n`. Scaling by 1/k
     for i in 1:n
-        if i + sum(D[1:i]) / alg.k >= n
-            return i
-        end
+        i + sum(D[1:i]) / alg.k >= n && return i
     end
+
     return nothing
 end
 
 """
-    compute(::Type{SlaterNumber}, g::AbstractGraph)
+    compute(::Type{SlaterNumber}, g::SimpleGraph{T}) where T <: Integer
 
 Return the Slater invariant for the graph `g`.
 """
@@ -46,7 +45,7 @@ function compute(
 end
 
 """
-    sub_total_domination_number(g::AbstractGraph)
+    compute(::Type{SubTotalDominationNumber}, g::SimpleGraph{T}) where T <: Integer
 
 Return the sub-total domination number of the graph `g`.
 
@@ -58,13 +57,14 @@ function compute(
     ::Type{SubTotalDominationNumber},
     g::SimpleGraph{T},
 ) where T <: Integer
+
     D = sort(Graphs.degree(g), rev=true)  # Sort in non-increasing order
     n = Graphs.nv(g)
+
     for i in 1:n
-        if sum(D[1:i]) >= n
-            return i
-        end
+        sum(D[1:i]) >= n && return i
     end
+
     return nothing
 end
 

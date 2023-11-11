@@ -26,6 +26,8 @@ function compute(
     g::SimpleGraph{T};
     optimizer=HiGHS.Optimizer
 ) where T <: Integer
+
     max_ms = compute(MaximumMatching, g; optimizer=optimizer)
+
     return length(max_ms.edges)
 end
