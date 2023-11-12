@@ -67,7 +67,7 @@ function _compute(
     @variable(model, s[1:n], Bin)
 
     # Integer decision variable for each vertex - how many steps does it take to force it?
-    @variable(model, x[1:n], Int, 0 <= x_interval <= max_steps)
+    @variable(model, x[1:n], Int, lower_bound = 0, upper_bound = max_steps)
 
     # Binary decision variable for each directed edge (u,v) - does u force v?
     @variable(model, y[1:m], Bin)
@@ -77,7 +77,17 @@ function _compute(
 
     # Constraints: For every vertex, v, it's in the set or exactly on edge is forcing it
     for (v, node) in enumerate(Graphs.vertices(g))
-        @constraint(model, s[v] + sum(y[v] for e in Graphs.inneighbors(g, node)) == 1)
+        # find index of all edges that have node as their destination
+        # delta_minus = findall(a -> Graphs.dst(a) == node, Graphs.edges(g)) # this is buggy
+        delta_minus = []
+        for (e, edge) in enumerate(edges(g))
+            if Graphs.dst(edge) == node
+                push!(delta_minus, e)
+            end
+        end
+        
+        # add constraint
+        @constraint(model, s[v] + sum(y[e] for e in delta_minus) == 1.0)
     end
 
     # Constraints: For every directed edge:
@@ -89,8 +99,8 @@ function _compute(
         u, v = Graphs.src(edge), Graphs.dst(edge)
 
         # lambda functions used in case == is ever overridden
-        index_u = findfirst(x -> x == u, vertices(g)) 
-        index_v = findfirst(x -> x == v, vertices(g))
+        index_u = findfirst(a -> a == u, vertices(g)) 
+        index_v = findfirst(a -> a == v, vertices(g))
 
         # add constraint 1
         @constraint(model, x[index_u] - x[index_v] + (max_steps + 1) * y[e] <= max_steps)
@@ -98,7 +108,7 @@ function _compute(
         # find all neighbors of u that are not v
         for w in Graphs.outneighbors(g, u)
             if w != v
-                index_w = findfirst(x -> x == w, vertices(g))
+                index_w = findfirst(a -> a == w, vertices(g))
 
                 # add constraint 2
                 @constraint(model, x[index_w] - x[index_v] + (max_steps + 1) * y[e] <= max_steps)

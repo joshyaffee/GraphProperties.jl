@@ -9,5 +9,5 @@ function zero_forcing_number(
 ) where T <: Integer
 
     opt_set = compute(MinimumZeroForcingSet, g)
-    return length(opt_set.nodes)
+    return length(collect(opt_set.nodes))
 end
