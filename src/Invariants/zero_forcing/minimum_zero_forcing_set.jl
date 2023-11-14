@@ -1,36 +1,52 @@
 """
     compute(::Type{MinimumZeroForcingSet}, g::AbstractGraph)
 
-Return a minimum zero forcing set of `g`.
+Return a minimum zero forcing set of `g` using a brute force method.
 
 """
-# previous implementation: what should we do with this?
+function compute(
+    ::Type{BruteForceMinimumZeroForcingSet},
+    g::SimpleGraph{T}
+) where T <: Integer
 
-# function compute(
-#     ::Type{MinimumZeroForcingSet},
-#     g::SimpleGraph{T}
-# ) where T <: Integer
+    # Get the number of vertices in `g`.
+    n = Graphs.nv(g)
 
-#     # Get the number of vertices in `g`.
-#     n = Graphs.nv(g)
-
-#     for size in 1:n
-#         for subset in Combinatorics.combinations(1:n, size)
-#             blue = Set(subset)
-#             apply!(ZeroForcingRule, blue, g; max_iter=n)
-#             length(blue) == n && return MinimumZeroForcingSet(subset)
-#         end
-#     end
-#     error("Could not find a minimum zero forcing set for $g")
-# end
+    for size in 1:n
+        for subset in Combinatorics.combinations(1:n, size)
+            blue = Set(subset)
+            apply!(ZeroForcingRule, blue, g; max_iter=n)
+            length(blue) == n && return BruteForceMinimumZeroForcingSet(subset)
+        end
+    end
+    error("Could not find a minimum zero forcing set for $g")
+end
 
 """
     compute(::Type{MinimumZeroForcingSet}, g::SimpleGraph)
 
-Return a minimum zero forcing set of undirected graph `g` using Integer Programming
+Return a minimum zero forcing set of the graph `g` using Integer Programming
 formulation from Brimkov et al. (2019), published in EJOR:
-https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007
+https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007.
+
+# Arguments
+- `::Type{MinimumZeroForcingSet}`: The type of zero forcing set to compute.
+- `g::SimpleGraph`: The input graph.
+
+# Example
+```julia
+julia> using Graphs
+
+julia> h = Graphs.complete_graph(4)
+{4, 6} undirected simple Int64 graph
+
+julia> compute(MinimumZeroForcingSet, h)
+MinimumZeroForcingSet(Set{Int64}([1, 2, 3, 4]))
+
+```
 """
+
+compute(MinimumZeroForcingSet, g)
 function compute(
     ::Type{MinimumZeroForcingSet},
     g::SimpleGraph{T}
@@ -39,12 +55,33 @@ function compute(
     # convert to directed graph, replacing each edge with two directed edges
     directed_g = Graphs.DiGraph(g)
 
-    return _compute(MinimumZeroForcingSet, directed_g)
+    return compute(MinimumZeroForcingSet, directed_g)
 end
 
-# helper function for computing minimum zero forcing set of undirected graph...
-# if it is already directed, can we just use this function? (and rename + document it)
-function _compute(
+"""
+    compute(::Type{MinimumZeroForcingSet}, g::DiGraph)
+
+Return a minimum zero forcing set of the graph `g` using Integer Programming
+formulation from Brimkov et al. (2019), published in EJOR:
+https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007.
+
+# Arguments
+- `::Type{MinimumZeroForcingSet}`: The type of zero forcing set to compute.
+- `g::DiGraph`: The input graph.
+
+# Example
+```julia
+julia> using Graphs
+
+julia> h = Graphs.DiGraph(Graphs.complete_graph(4))
+{4, 12} directed simple Int64 graph
+
+julia> compute(MinimumZeroForcingSet, h)
+MinimumZeroForcingSet(Set{Int64}([1, 2, 3, 4]))
+
+```
+"""
+function compute(
     ::Type{MinimumZeroForcingSet},
     g::DiGraph{T},
     optimizer=HiGHS.Optimizer

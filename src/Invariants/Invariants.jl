@@ -339,6 +339,17 @@ struct MinimumZeroForcingSet <: AbstractOptimalNodeSet
 end
 
 """
+    BruteForceMinimumZeroForcingSet
+
+Represents a minimum zero forcing set of a graph.
+Indicates solution was found via brute force
+"""
+
+struct BruteForceMinimumZeroForcingSet <: AbstractOptimalNodeSet
+    nodes::Vector{Int}
+end
+
+"""
     ZeroForcingNumber
 
 Represents the cardinality of a minimum zero forcing set of a graph.
@@ -466,6 +477,7 @@ export MaximumMatching
 export MatchingNumber
 export matching_number
 
+export BruteForceMinimumZeroForcingSet
 export MinimumZeroForcingSet
 export ZeroForcingNumber
 export zero_forcing_number
