@@ -45,8 +45,6 @@ MinimumZeroForcingSet(Set{Int64}([1, 2, 3, 4]))
 
 ```
 """
-
-compute(MinimumZeroForcingSet, g)
 function compute(
     ::Type{MinimumZeroForcingSet},
     g::SimpleGraph{T}
