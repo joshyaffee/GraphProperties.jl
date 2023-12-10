@@ -1,4 +1,49 @@
 
+# encapsulate G'' separately, as it will be moved to a separate module later
+function construction2(
+    c_size:: Int,
+    k_sizes:: Union{Array{Int, 1}, Int}
+    )
+
+    # Throw exception if k_sizes is an array and does not have length c_size
+    k_sizes isa Array{Int, 1} &&
+        (length(k_sizes) != c_size) &&
+        throw(ArgumentError("k_sizes must have length equal to c_size or be an integer"))
+
+    # determine k_sizes vector depending on type provided
+    k_sizes isa Int && (k_sizes = fill(k_sizes, c_size))
+
+    # initialize G'' nodes
+    G2 = Graphs.SimpleGraph(c_size + sum(k_sizes))
+
+    # add edges within cycle
+    for i in 1:c_size
+        add_edge!(G2, i, (i % c_size) + 1)
+    end
+
+    # For i = 1, . . . k, attach each vertex of K^i_ni to both vi and vi+1 (with i = i mod k)
+    top_node_used = c_size
+    for (i, k_size) in enumerate(k_sizes)
+        for j in 1:k_size
+
+            # connect each node to the cycle
+            add_edge!(G2, top_node_used + j, i)
+            add_edge!(G2, top_node_used + j, (i % c_size) + 1) 
+
+            # make clique by connecting each node with previously added nodes
+            for k in (top_node_used + 1):(top_node_used + j - 1)
+                add_edge!(G2, top_node_used + j, k)
+            end
+        end
+
+        # update top_node_used
+        top_node_used += k_size
+    end
+
+    return G2
+end
+
+
 @testset "GraphProperties.Invariants.jl" begin
 
     g = Graphs.SimpleGraph(10)
@@ -38,6 +83,8 @@
     add_edge!(s22, 4, 5)
     add_edge!(s22, 4, 6)
 
+    g2 = construction2(6,[1,2,3,1,2,3])
+    # g2_lg = construction2(15,[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3])
 
     @testset "Independence" begin
 
@@ -101,6 +148,13 @@
 
         @testset "Clique Graph Tests" begin
             @test zero_forcing_number(h) == 3
+        end
+
+        @testset "G2 Construction Tests" begin
+            @test zero_forcing_number(g2) == nv(g2) - independence_number(g2)
+            # test this next, I think the answer is 1 off, do some drawing maybe
+            # takes ~ 13 minutes
+            # @test zero_forcing_number(g2_lg) == nv(g2_lg) - independence_number(g2_lg)
         end
     end
 
