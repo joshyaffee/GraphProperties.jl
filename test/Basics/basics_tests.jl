@@ -75,10 +75,10 @@
     end
 
     @testset "order" begin
-        @test order(g_2) == 5
-        @test order(g_3) == 8
-        @test order(g_4) == 5
-        @test order(g_5) == 9
+        @test GraphProperties.Basics.order(g_2) == 5
+        @test GraphProperties.Basics.order(g_3) == 8
+        @test GraphProperties.Basics.order(g_4) == 5
+        @test GraphProperties.Basics.order(g_5) == 9
     end
 
     @testset "size" begin

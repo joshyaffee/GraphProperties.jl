@@ -20,7 +20,7 @@ end
 @testset "GraphProperties.Basics.jl Tests" begin
     using Graphs
     using GraphProperties
-    using GraphProperties.Basics: diameter, girth, is_bull_free, is_claw_free, is_triangle_free, radius, size
+    using GraphProperties.Basics: diameter, girth, is_bull_free, is_claw_free, is_triangle_free, order, radius, size
 
     include(joinpath(@__DIR__, "Basics","basics_tests.jl"))
 end
