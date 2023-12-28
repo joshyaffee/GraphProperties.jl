@@ -10,9 +10,12 @@ using SimpleWeightedGraphs
 
 # Other functions from packages used in this package
 using Colors: distinguishable_colors
-using GraphPlot: gplot
-using Random: shuffle, shuffle!
 using DataStructures
+using GraphPlot: gplot
+using LinearAlgebra
+using Logging
+using Random: shuffle, shuffle!
+using SparseArrays
 
 # ============================
 # ABSTRACT TYPES
@@ -209,9 +212,22 @@ struct PageRank{DT <: Float64, TolT <: Float64, IterT <: Int64} <: CommunityDete
     d::DT
     tol::TolT
     max_iter::IterT
+    method_name::String
+
+    # Default constructor
+    function PageRank(; d::DT = 0.85, tol::TolT = 1e-6, max_iter::IterT = 100, method_name::String = "adaptive") where {DT, TolT, IterT}
+        @assert method_name in ["adaptive", "classical", "iterative"] "Invalid method name. Choose from 'adaptive', 'classical', or 'iterative'."
+        @assert 0 < d < 1 "Invalid damping factor. Must be between 0 and 1."
+        if d ≥ 0.5 && method_name == "iterative"
+            @warn "Invalid initial damping factor. Must be less than 0.5 for iterative method. Halving damping factor."
+            d /= 2
+        end
+        if d < 0.85 && method_name == "classical"
+            @warn "For Classical PageRank, a damping factor between 0.85 and 0.99 is recommended."
+        end
+        new{DT, TolT, IterT}(d, tol, max_iter, method_name)
+    end
 end
-# Default constructor
-PageRank(;d = 0.85, tol = 1e-6, max_iter = 100) = PageRank(d, tol, max_iter)
 
 #... other algorithms in the future
 
