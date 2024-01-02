@@ -1,4 +1,3 @@
-using Revise
 using Test
 
 @testset "GraphProperties.Invariants.jl Tests" begin
