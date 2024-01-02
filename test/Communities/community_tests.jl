@@ -6,30 +6,46 @@
     add_edge!(g1, 1, 4)
     add_edge!(g1, 1, 5)
 
-    # # a WeightedDiGraph grid
-    # g2 = WeightedDiGraph(9) # need to implement this?
-    # add_edge!(g2, 1, 2, 2.0)
-    # add_edge!(g2, 1, 4, 1.0)
-    # add_edge!(g2, 2, 3, 2.0)
-    # add_edge!(g2, 2, 5, 1.0)
-    # add_edge!(g2, 3, 6, 1.0)
-    # add_edge!(g2, 4, 5, 2.0)
-    # add_edge!(g2, 4, 7, 1.0)
-    # add_edge!(g2, 5, 6, 2.0)
-    # add_edge!(g2, 5, 8, 1.0)
-    # add_edge!(g2, 6, 9, 1.0)
-    # add_edge!(g2, 7, 8, 2.0)
-    # add_edge!(g2, 8, 9, 2.0)
+    # a WeightedDiGraph grid
+    g2_sources = [1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 8]
+    g2_targets = [2, 4, 3, 5, 6, 5, 7, 6, 8, 9, 8, 9]
+    g2_weights = [2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0]
+    g2 = SimpleWeightedDiGraph(g2_sources, g2_targets, g2_weights)
 
-    # # periodic, weighted grid
-    # g3 = copy(g2)
-    # add_edge!(g3, 9, 1, 1.0)
-
+    # a periodic grid
+    g3_sources = [1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 8, 9]
+    g3_targets = [2, 4, 3, 5, 6, 5, 7, 6, 8, 9, 8, 9, 1]
+    g3_weights = [2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0]
+    g3 = SimpleWeightedDiGraph(g3_sources, g3_targets, g3_weights)
 
 
     @testset "Adaptive PageRank" begin
-        π = compute(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g1)
+        π = compute(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "adaptive"), g1)
         ans = [.5, .125, .125, .125, .125]
         @test all(π .≥ ans .- .001) && all(π .≤ ans .+ .001)
+
+        π = compute(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g2)
+        @test (π[2] > π[4]) && (π[6] > π[8]) && (π[9] == maximum(π))
+
+        π = compute(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g3)
+        @test (π[2] > π[4]) && (π[6] > π[8])
+    end
+    
+    @testset "Iterative PageRank" begin
+        π = compute(PageRank(d = .425, tol = 1e-10, max_iter = 1_000, method_name = "iterative"), g1)
+        ans = [.5, .125, .125, .125, .125]
+        @test all(π .≥ ans .- .001) && all(π .≤ ans .+ .001)
+
+        π = compute(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g2)
+        @test (π[2] > π[4]) && (π[6] > π[8]) && (π[9] == maximum(π))
+
+        π = compute(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g3)
+        @test (π[2] > π[4]) && (π[6] > π[8])
+    end
+
+    @testset "Classical Pagerank" begin
+        π = compute(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "classical"), g1)
+        ans1 = 0.47567668878363595
+        @test π[1] ≤ ans1 + .001 && π[1] ≥ ans1 - .001
     end
 end

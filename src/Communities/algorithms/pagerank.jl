@@ -81,15 +81,15 @@ function compute(
 
     adj_matrix = Graphs.adjacency_matrix(g)
 
-    for (row_index, row_values) in eachrow(adj_matrix) 
+    for (row_index, row_values) in enumerate(eachrow(adj_matrix))
         # Throw exception if there is a negative weight:
         if any(row_values .< 0)
             throw(ArgumentError("Negative weights are not supported."))
         end
 
         # If the row is all zeros (disregarding loops), then it is a sink. Connect it to all other nodes:
-        loop = adj_matrix[row_index + 1, row_index + 1] # why does eachrow return a zero-indexed row index? This is Julia 😢
-        if sum(row_values) - loop == 0
+        loop = adj_matrix[row_index, row_index]
+        if sum(row_values) - loop == 0.0
             adj_matrix[row_index, :] .= 1
             if loop == 0
                 adj_matrix[row_index, row_index] = 0
@@ -97,8 +97,9 @@ function compute(
         end
     end
     
-    # normalize rows to sum to 1
-    P = adj_matrix ./ sum(adj_matrix, dims=1)
+    # normalize rows to sum to 1 and transpose
+    P = adj_matrix ./ sum(adj_matrix, dims=2)
+    P = copy(SparseArrays.transpose(P))
 
     f_map = Dict("classical" => _classical_pagerank, "iterative" => _iterative_regularization_pagerank, "adaptive" => _adaptive_regularization_pagerank)
 
@@ -128,10 +129,11 @@ function _classical_pagerank(
         pr = d .* P * pr .+ (1 - d) / N
         
         if LinearAlgebra.norm(pr - prev_pr, 1) < tol
-            break
+            return pr
         end
     end
-    
+
+    println("Warning: max_iter reached")
     return pr
 end
 
@@ -139,7 +141,7 @@ function _iterative_regularization_pagerank(
     P::SparseMatrixCSC, 
     d::Float64, 
     tol::Float64, 
-    max_iter::Float64
+    max_iter::Int64
     )::Vector{Float64}
 
     # initialize
@@ -159,9 +161,11 @@ function _iterative_regularization_pagerank(
         pr = α .* P * pr .+ (1 - α) / N
         
         if LinearAlgebra.norm(pr - prev_pr, 1) < tol
-            break
+            println("Converged in $k iterations")
+            return pr
         end
     end
+    println("Warning: max_iter reached")
     
     return pr
 end
@@ -196,6 +200,7 @@ function _adaptive_regularization_pagerank(
             
             k += 1
             if k ≥ max_iter
+                println("Warning: max_iter reached")
                 return pr
             end
         end
@@ -204,5 +209,6 @@ function _adaptive_regularization_pagerank(
         this_tol = max(tol, this_tol / 2)
     end
     
+    println("Converged in $k iterations")
     return pr
-end
+end 
