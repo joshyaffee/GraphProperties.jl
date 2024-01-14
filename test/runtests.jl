@@ -29,7 +29,7 @@ end
     using Graphs
     using SimpleWeightedGraphs
     using GraphProperties
-    using GraphProperties.Communities: compute, PageRank
+    using GraphProperties.Communities: PageRank, compute as compute_pagerank
 
     include(joinpath(@__DIR__, "Communities","community_tests.jl"))
 end

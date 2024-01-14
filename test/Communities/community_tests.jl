@@ -20,31 +20,31 @@
 
 
     @testset "Adaptive PageRank" begin
-        π = compute(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "adaptive"), g1)
+        π = compute_pagerank(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "adaptive"), g1)
         ans = [.5, .125, .125, .125, .125]
         @test all(π .≥ ans .- .001) && all(π .≤ ans .+ .001)
 
-        π = compute(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g2)
+        π = compute_pagerank(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g2)
         @test (π[2] > π[4]) && (π[6] > π[8]) && (π[9] == maximum(π))
 
-        π = compute(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g3)
+        π = compute_pagerank(PageRank(d = .85, tol = 1e-15, max_iter = 1_000, method_name = "adaptive"), g3)
         @test (π[2] > π[4]) && (π[6] > π[8])
     end
     
     @testset "Iterative PageRank" begin
-        π = compute(PageRank(d = .425, tol = 1e-10, max_iter = 1_000, method_name = "iterative"), g1)
+        π = compute_pagerank(PageRank(d = .425, tol = 1e-10, max_iter = 1_000, method_name = "iterative"), g1)
         ans = [.5, .125, .125, .125, .125]
         @test all(π .≥ ans .- .001) && all(π .≤ ans .+ .001)
 
-        π = compute(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g2)
+        π = compute_pagerank(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g2)
         @test (π[2] > π[4]) && (π[6] > π[8]) && (π[9] == maximum(π))
 
-        π = compute(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g3)
+        π = compute_pagerank(PageRank(d = .425, tol = 1e-15, max_iter = 1_000, method_name = "iterative"), g3)
         @test (π[2] > π[4]) && (π[6] > π[8])
     end
 
     @testset "Classical Pagerank" begin
-        π = compute(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "classical"), g1)
+        π = compute_pagerank(PageRank(d = .85, tol = 1e-10, max_iter = 1_000, method_name = "classical"), g1)
         ans1 = 0.47567668878363595
         @test π[1] ≤ ans1 + .001 && π[1] ≥ ans1 - .001
     end
