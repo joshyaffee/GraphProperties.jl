@@ -19,12 +19,14 @@ Compute the PageRank values of the nodes in graph `g` using the specified PageRa
 
 # Details
 
-The function uses the power iteration method to find the principal eigenvector of an altered adjacency matrix.
-The altered matrix is created by 'damping' the original matrix, which is done by adding a constant to each entry
-as well as taking care of sinks. The iterative and adaptive methods increase the damping factor (decreases perturbance of P) 
-as the algorithm progresses, which is shown to improve convergence. The iterative method increases the damping factor
-over a determined sequence, while the adaptive method maintains the damping factor until a relaxed tolerance is reached, 
-then lowers the tolerance and repeats until the original tolerance is reached.
+The function uses the power iteration method to find the principal eigenvector of an
+altered adjacency matrix. The altered matrix is created by 'damping' the original matrix,
+which is done by adding a constant to each entry as well as taking care of sinks. The
+iterative and adaptive methods increase the damping factor (decreases perturbance of P) as
+the algorithm progresses, which is shown to improve convergence. The iterative method
+increases the damping factor over a determined sequence, while the adaptive method
+maintains the damping factor until a relaxed tolerance is reached, then lowers the
+tolerance and repeats until the original tolerance is reached.
 
 ```julia
 julia> g = generate(PlantedPartition())
@@ -46,7 +48,8 @@ function compute(
             throw(ArgumentError("Negative weights are not supported."))
         end
 
-        # If the row is all zeros (disregarding loops), then it is a sink. Connect it to all other nodes:
+        # If the row is all zeros (disregarding loops), then it is a sink. 
+        # Connect sinks to all other nodes.
         loop = adj_matrix[row_index, row_index]
         if sum(row_values) - loop == 0.0
             adj_matrix[row_index, :] .= 1
@@ -56,11 +59,12 @@ function compute(
         end
     end
     
-    # normalize rows to sum to 1 and transpose
+    # Normalize rows to sum to 1 and transpose P.
     P = adj_matrix ./ sum(adj_matrix, dims=2)
     P = copy(SparseArrays.transpose(P))
 
-    f_map = Dict("classical" => _classical_pagerank, "iterative" => _iterative_regularization_pagerank, "adaptive" => _adaptive_regularization_pagerank)
+    f_map = Dict("classical" => _classical_pagerank, "iterative" => 
+    _iterative_regularization_pagerank, "adaptive" => _adaptive_regularization_pagerank)
 
     pagerank_function = f_map[algo.method_name]
     d = algo.d
@@ -71,9 +75,11 @@ function compute(
 end  
 
 """
-    _classical_pagerank(P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
+    _classical_pagerank(
+        P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
 
-Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in graph `g` using the classical PageRank algorithm.
+Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in
+    graph `g` using the classical PageRank algorithm.
 
 # Arguments
 
@@ -84,7 +90,8 @@ Helper function for compute(Pagerank, g), computes the PageRank values of the no
 
 # Returns
 
-- A vector of `Float64` where each entry represents the PageRank value of the corresponding node in the graph.
+- A vector of `Float64` where each entry represents the PageRank value of the
+    corresponding node in the graph.
 """
 function _classical_pagerank(
     P::SparseMatrixCSC, 
@@ -93,14 +100,14 @@ function _classical_pagerank(
     max_iter::Int64
 )::Vector{Float64}
 
-    # initialize
+    # Initialize N and pr.
     N = size(P, 1)
 
     pr = LinearAlgebra.ones(N) / N
 
     for _ in 1:max_iter
         prev_pr = copy(pr)
-        # power method for principle eigenvector of modified P
+        # Run the power method for principle eigenvector of modified P.
         pr = d .* P * pr .+ (1 - d) / N
         
         if LinearAlgebra.norm(pr - prev_pr, 1) < tol
@@ -113,20 +120,24 @@ function _classical_pagerank(
 end
 
 """
-    _iterative_pagerank(P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
+    _iterative_pagerank(
+        P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
 
-Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in graph `g` using the iterative regularization PageRank algorithm.
+Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in
+    graph `g` using the iterative regularization PageRank algorithm.
 
 # Arguments
 
 - `P::SparseMatrixCSC`: The Markov Chain associated with `g`.
-- `d::Float64`: The initial damping factor, from which the regularization factor is computed. 0 < d < .5
+- `d::Float64`: The initial damping factor, from which the regularization factor is
+  computed. 0 < d < .5
 - `tol::Float64`: The tolerance for convergence.
 - `max_iter::Int64`: The maximum number of iterations.
 
 # Returns
 
-- A vector of `Float64` where each entry represents the PageRank value of the corresponding node in the graph.
+- A vector of `Float64` where each entry represents the PageRank value of the
+  corresponding node in the graph.
 """
 function _iterative_regularization_pagerank(
     P::SparseMatrixCSC, 
@@ -135,20 +146,21 @@ function _iterative_regularization_pagerank(
     max_iter::Int64
 )::Vector{Float64}
 
-    # initialize
+    # Initialize N and pr.
     N = size(P, 1)
 
     pr = LinearAlgebra.ones(N) / N
-    # compute p for regularization factor
+
+    # Compute p for regularization factor.
     p = log2(1 / (1 - d))
 
-    # iterate until tolerance is reached or max_iter is reached
+    # Iterate until tolerance is reached or max_iter is reached.
     for k in 1:max_iter
-        # regularization factor
+        # Calculate regularization factor.
         α = 1 - 1 / ((k+2) ^ p) 
 
         prev_pr = copy(pr)
-        # power method for principle eigenvector of modified P
+        # Run Power method for principle eigenvector of modified P.
         pr = α .* P * pr .+ (1 - α) / N
         
         if LinearAlgebra.norm(pr - prev_pr, 1) < tol
@@ -162,9 +174,11 @@ function _iterative_regularization_pagerank(
 end
 
 """
-    _adaptive_pagerank(P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
+    _adaptive_pagerank(
+        P::SparseMatrixCSC, d::Float64, tol::Float64, max_iter::Int64)::Vector{Float64}
 
-Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in graph `g` using the adaptive regularization PageRank algorithm.
+Helper function for compute(Pagerank, g), computes the PageRank values of the nodes in
+graph `g` using the adaptive regularization PageRank algorithm.
 
 # Arguments
 
@@ -175,7 +189,8 @@ Helper function for compute(Pagerank, g), computes the PageRank values of the no
 
 # Returns
 
-- A vector of `Float64` where each entry represents the PageRank value of the corresponding node in the graph.
+- A vector of `Float64` where each entry represents the PageRank value of the
+  corresponding node in the graph.
 """
 function _adaptive_regularization_pagerank(
     P::SparseMatrixCSC, 
@@ -194,15 +209,15 @@ function _adaptive_regularization_pagerank(
     this_tol = 1 - d
     k = 0
 
-    # continue until tolerance is reached or max_iter is reached
+    # Continue until tolerance is reached or max_iter is reached.
     while LinearAlgebra.norm(pr - prev_pr, 1) > tol
 
-        # set damping factor to use until this tolerance is reached
+        # Set damping factor to use until this tolerance is reached.
         α = 1 - this_tol
         while LinearAlgebra.norm(pr - prev_pr, 1) > this_tol
             prev_pr = copy(pr)
 
-            # power method for principle eigenvector of modified P
+            # Run power method for principle eigenvector of modified P.
             pr = α .* P * pr .+ (1 - α) / N
             
             k += 1
@@ -212,7 +227,7 @@ function _adaptive_regularization_pagerank(
             end
         end
 
-        # update tolerance by halving it
+        # Update tolerance by halving it.
         this_tol = max(tol, this_tol / 2)
     end
     
