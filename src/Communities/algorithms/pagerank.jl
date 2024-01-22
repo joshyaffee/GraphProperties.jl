@@ -36,7 +36,7 @@ julia> compute(algo, g)
 function compute(
     algo::PageRank,
     g::AbstractGraph
-    )::Vector{Float64}
+)::Vector{Float64}
 
     adj_matrix = Graphs.adjacency_matrix(g)
 
@@ -91,7 +91,7 @@ function _classical_pagerank(
     d::Float64, 
     tol::Float64, 
     max_iter::Int64
-    )::Vector{Float64}
+)::Vector{Float64}
 
     # initialize
     N = size(P, 1)
@@ -133,7 +133,7 @@ function _iterative_regularization_pagerank(
     d::Float64, 
     tol::Float64, 
     max_iter::Int64
-    )::Vector{Float64}
+)::Vector{Float64}
 
     # initialize
     N = size(P, 1)
@@ -182,7 +182,7 @@ function _adaptive_regularization_pagerank(
     d::Float64, 
     tol::Float64, 
     max_iter::Int64
-    )::Vector{Float64}
+)::Vector{Float64}
 
     # initialize
     N = size(P, 1)
