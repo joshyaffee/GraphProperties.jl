@@ -24,3 +24,12 @@ end
 
     include(joinpath(@__DIR__, "Basics","basics_tests.jl"))
 end
+
+@testset "GraphProperties.Communities.jl Tests" begin
+    using Graphs
+    using SimpleWeightedGraphs
+    using GraphProperties
+    using GraphProperties.Communities: PageRank, compute as compute_pagerank
+
+    include(joinpath(@__DIR__, "Communities","community_tests.jl"))
+end
