@@ -1,8 +1,37 @@
 """
     compute(::Type{BruteForceMinimumZeroForcingSet}, g::AbstractGraph)
 
-Return a minimum zero forcing set of `g` using a brute force method.
+Return a minimum zero forcing set of `g` using a brute force method. 
 
+This method assures correctness, but is not efficient for large graphs. A set of nodes is
+considered zero forcing if it can force all nodes in the graph to be colored by the
+following rules:
+    - If a node is colored, it remains colored.
+    - If a node is colored and has exactly one uncolored neighbor, that neighbor is
+      colored.
+A minimum zero forcing set is a zero forcing set of minimum cardinality.
+
+# Arguments
+- g::AbstractGraph: The input graph.
+
+# Examples
+```jldoctest
+julia> using Graphs
+
+julia> using GraphProperties.Invariants
+
+julia> g = path_graph(5)
+{5, 4} undirected simple Int64 graph
+
+julia> compute(BruteForceMinimumZeroForcingSet, g)
+BruteForceMinimumZeroForcingSet(Set{Int64}([1]))
+
+julia> h = Graphs.complete_graph(4)
+{4, 6} undirected simple Int64 graph
+
+julia> compute(BruteForceMinimumZeroForcingSet, h)
+BruteForceMinimumZeroForcingSet(Set{Int64}([1, 2, 3]))
+```
 """
 function compute(
     ::Type{BruteForceMinimumZeroForcingSet},
@@ -25,13 +54,24 @@ end
 """
     compute(::Type{MinimumZeroForcingSet}, g::SimpleGraph)
 
-Return a minimum zero forcing set of the graph `g` using Integer Programming
-formulation from Brimkov et al. (2019), published in EJOR:
-https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007.
+Return a minimum zero forcing set of the graph `g` 
+
+This method uses an Integer Programming formulation from Brimkov et al. (2019), published
+in [EJOR](https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007).
+
+### Implementation Notes
+This method converts the input graph to a directed graph, replacing each edge with two
+directed edges. If the input graph is already directed, a different method is used. This
+method uses the HiGHS optimizer to solve the Integer Program by deafault and has
+encountered some issues with this optimizer. If you encounter issues, try using a
+different optimizer.
 
 # Arguments
-- `::Type{MinimumZeroForcingSet}`: The type of zero forcing set to compute.
 - `g::SimpleGraph`: The input graph.
+
+# Keywords
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the minimum zero forcing
+  set problem.
 
 # Example
 ```julia
@@ -41,8 +81,7 @@ julia> h = Graphs.complete_graph(4)
 {4, 6} undirected simple Int64 graph
 
 julia> compute(MinimumZeroForcingSet, h)
-MinimumZeroForcingSet(Set{Int64}([1, 2, 3, 4]))
-
+MinimumZeroForcingSet(Set{Int64}([1, 2, 3]))
 ```
 """
 function compute(
@@ -58,26 +97,37 @@ function compute(
 end
 
 """
-    compute(::Type{MinimumZeroForcingSet}, g::DiGraph)
+    compute(::Type{MinimumZeroForcingSet}, g::SimpleGraph)
 
-Return a minimum zero forcing set of the graph `g` using Integer Programming
-formulation from Brimkov et al. (2019), published in EJOR:
-https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007.
+Return a minimum zero forcing set of the graph `g` 
+
+This method uses an Integer Programming formulation from Brimkov et al. (2019), published
+in [EJOR](https://www.sciencedirect.com/science/article/pii/S0377221718308063#sec0007).
+
+### Implementation Notes
+This method uses the HiGHS optimizer to solve the Integer Program by deafault and has
+encountered some issues with this optimizer. If you encounter issues, try using a
+different optimizer.
 
 # Arguments
-- `::Type{MinimumZeroForcingSet}`: The type of zero forcing set to compute.
-- `g::DiGraph`: The input graph.
+- `g::DiGraph{T}`: The input graph, with directed edges.
+
+# Keywords
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the minimum zero forcing
+  set problem.
 
 # Example
 ```julia
 julia> using Graphs
 
-julia> h = Graphs.DiGraph(Graphs.complete_graph(4))
+julia> h = Graphs.complete_graph(4)
+{4, 6} undirected simple Int64 graph
+
+julia> directed_h = Graphs.DiGraph(h)
 {4, 12} directed simple Int64 graph
 
-julia> compute(MinimumZeroForcingSet, h)
-MinimumZeroForcingSet(Set{Int64}([1, 2, 3, 4]))
-
+julia> compute(MinimumZeroForcingSet, directed_h)
+MinimumZeroForcingSet(Set{Int64}([1, 2, 3]))
 ```
 """
 function compute(
@@ -151,89 +201,3 @@ function compute(
 
     return MinimumZeroForcingSet(zero_forcing_set)
 end
-
-# function compute(
-#     ::Type{MinimumZeroForcingSet},
-#     g::DiGraph{T},
-#     optimizer= HiGHS.Optimizer
-# ) where T <: Integer
-
-#     # Instantiate the model.
-#     model = Model(optimizer)
-#     JuMP.set_silent(model)
-
-#     # The number of vertices.
-#     n = Graphs.nv(g)
-
-#     # The number of directed edges.
-#     m = Graphs.ne(g)
-
-#     max_steps = n   # very loose bound for now; should be tightened 
-#                     # (to diameter of graph?) but I leave it like this for now
-    
-#     node_array = collect(Graphs.vertices(g))
-#     edge_array = collect(Graphs.edges(g))
-
-#     # Binary decision variable for each vertex - is it in Z(G)?
-#     @variable(model, s[1:n], Bin)
-
-#     # Integer decision variable for each vertex - how many steps does it take to force it?
-#     @variable(model, x[1:n], Int, lower_bound = 0, upper_bound = max_steps)
-
-#     # Binary decision variable for each directed edge (u,v) - does u force v?
-#     @variable(model, y[1:m], Bin)
-
-#     # Objective: Minimize the number of vertices in Z(G)
-#     @objective(model, Min, sum(s[i] for i in 1:n))
-
-#     # Constraints: For every vertex, v, it's in the set or exactly on edge is forcing it
-#     for (v, node) in enumerate(node_array)
-#         # find index of all edges that have node as their destination
-#         # delta_minus = findall(a -> Graphs.dst(a) == node, Graphs.edges(g)) # this is buggy
-#         delta_minus = []
-#         for (e, edge) in enumerate(edge_array)
-#             if Graphs.dst(edge) == node
-#                 push!(delta_minus, e)
-#             end
-#         end
-        
-#         # add constraint
-#         @constraint(model, s[v] + sum(y[e] for e in delta_minus) == 1.0)
-#     end
-
-#     # Constraints: For every directed edge:
-#         #(u,v), x_u - x_v + (max_steps + 1) * y_uv <= max_steps
-#     # and
-#     # For every directed edge, (u,v), For all neighbors of u that are not v, call them w:
-#         # x_w - x_v + (max_steps + 1) * y_uv <= max_steps
-#     for (e, edge) in enumerate(edge_array)
-#         u, v = Graphs.src(edge), Graphs.dst(edge)
-
-#         # lambda functions used in case == is ever overridden
-#         index_u = findfirst(a -> a == u, node_array) 
-#         index_v = findfirst(a -> a == v, node_array)
-
-#         # add constraint 1
-#         @constraint(model, x[index_u] - x[index_v] + (max_steps + 1) * y[e] <= max_steps)
-
-#         # find all neighbors of u that are not v
-#         for w in Graphs.inneighbors(g, u)
-#             if w != v
-#                 index_w = findfirst(a -> a == w, node_array)
-
-#                 # add constraint 2
-#                 @constraint(model, x[index_w] - x[index_v] + (max_steps + 1) * y[e] <= max_steps)
-#             end
-#         end
-#     end
-
-#     # Solve the model.
-#     optimize!(model)
-
-#     # Extract the solution.
-#     zero_forcing_set = [node_array[v] for v in 1:n if value(s[v]) == 1.0]
-
-#     return MinimumZeroForcingSet(zero_forcing_set)
-# end
-
-#######################

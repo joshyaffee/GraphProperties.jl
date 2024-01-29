@@ -5,8 +5,7 @@
         optimizer=Cbc.Optimizer,
     ) where T <: Integer
 
-Obtain a [maximum independent set](https://en.wikipedia.org/wiki/Independent_set_(graph_theory)) of
-`g`.
+Obtain a [maximum independent set](https://en.wikipedia.org/wiki/Independent_set_(graph_theory)) of `g`.
 
 ### Implementation Notes
 The independent set is found by solving the following linear program:
@@ -19,7 +18,20 @@ The independent set is found by solving the following linear program:
 \end{align*}
 ```
 
-### Example
+# Arguments
+
+- `g::AbstractGraph{T}`: The graph to compute the maximum independent set of.
+
+# Keywords
+
+- `optimizer=Cbc.Optimizer`: The optimizer to use to solve the maximum independent set
+  problem.
+
+# Returns
+
+- A `MaximumIndependentSet` object representing the maximum independent set of `g`.
+
+# Example
 ```jldoctest
 julia> using Graphs
 
@@ -27,10 +39,7 @@ julia> g = path_graph(5)
 {5, 4} undirected simple Int64 graph
 
 julia> compute(MaximumIndependentSet, g)
-3-element Vector{Int64}:
- 1
- 3
- 5
+MaximumIndependentSet([1, 3, 5])
 ```
 """
 function compute(

@@ -1,4 +1,4 @@
-@doc raw"""
+"""
     function independence_number(
         g::SimpleGraph{T};
         optimizer=Cbc.Optimizer,
@@ -10,7 +10,20 @@ Return the [independence number](https://en.wikipedia.org/wiki/Independent_set_(
 This function relies on `compute` to obtain a maximum independent set of `g`.
 The `optimizer` is passed to `max_independent_set`.
 
-### Example
+# Arguments
+
+- `g::SimpleGraph{T}`: The graph to compute the independence number of.
+
+# Keywords
+
+- `optimizer=Cbc.Optimizer`: The optimizer to use to solve the maximum independent set
+  problem.
+
+# Returns
+
+- The independence number of `g`.
+
+# Example
 ```julia
 julia> using Graphs
 

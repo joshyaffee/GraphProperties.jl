@@ -1,3 +1,47 @@
+"""
+    compute(
+        ::Type{MinimumProperColoring},
+        g::SimpleGraph{T};
+        optimizer = HiGHS.Optimizer
+    ) where T <: Integer
+
+Return the minimum proper coloring of `g` by solving a Binary Program.
+
+# Arguments
+
+- `g::SimpleGraph{T}`: The graph to compute the minimum proper coloring of.
+
+# Keywords
+
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the minimum proper coloring
+  problem.
+
+# Returns
+
+- A `MinimumProperColoring` object representing the minimum proper coloring of `g`.
+
+# Example
+
+```jldoctest
+julia> using Graphs
+
+julia> using GraphProperties.Invariants
+
+julia> g = SimpleGraph(5)
+{5, 0} undirected simple Int64 graph
+
+julia> add_edge!(g, 1, 2);
+
+julia> add_edge!(g, 1, 3);
+
+julia> add_edge!(g, 1, 4);
+
+julia> add_edge!(g, 1, 5);
+
+julia> compute(MinimumProperColoring, g)
+MinimumProperColoring(Dict(5 => 2, 4 => 2, 2 => 2, 3 => 2, 1 => 1))
+```
+"""
 function compute(
     ::Type{MinimumProperColoring},
     g::SimpleGraph{T};
