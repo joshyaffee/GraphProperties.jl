@@ -26,7 +26,7 @@ is said to be maximum if it has the largest possible cardinality among all match
 ```jldoctest
 julia> using Graphs
 
-julia> using GraphInvariants
+julia> using GraphProperties.Invariants
 
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph

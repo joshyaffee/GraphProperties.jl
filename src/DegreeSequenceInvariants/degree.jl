@@ -22,9 +22,9 @@ end
 """
     average_degree(g::AbstractGraph{T}) where T <: Integer
 
-Return the average degree of `g`.
+Return the (arithmetic) average degree of `g`.
 
 """
-function average_degree(g::SimpleGraph{T}) where T <: Integer
+function average_degree(g::SimpleGraph{T},) where T <: Integer
     return mean(Graphs.degree(g))
 end

@@ -11,12 +11,12 @@ within the module.
 - `AbstractOptimalEdgeSet`: Represents sets of edges that meet an optimality criterion.
 - `AbstractOptimalNodeColoring`: Represents an optimal coloring of nodes in a graph.
 - `AbstractOptimalEdgeColoring`: Represents an optimal coloring of edges in a graph.
+- `AbstractCardinality`: Represents the cardinality of a set.
 - `AbstractOptimalCardinality`: Represents the cardinality of an optimal set.
 - `AbstractDegreeSequenceInvariant`: Represents an invariant of a graph's degree sequence.
 
 # Exported Functions
 - `compute`: Computes the optimal set or invariant of a graph.
-- `draw_optimal_set`: Draws a graph with the optimal set highlighted.
 
 # Usage
 The module allows for the computation of complex graph invariants and operations through

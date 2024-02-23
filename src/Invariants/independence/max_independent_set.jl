@@ -35,6 +35,8 @@ The independent set is found by solving the following linear program:
 ```jldoctest
 julia> using Graphs
 
+julia> using GraphProperties.Invariants
+
 julia> g = path_graph(5)
 {5, 4} undirected simple Int64 graph
 

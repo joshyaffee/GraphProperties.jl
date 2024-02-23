@@ -27,6 +27,8 @@ The `optimizer` is passed to `max_independent_set`.
 ```julia
 julia> using Graphs
 
+julia> using GraphProperties.Invariants
+
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 

@@ -1,3 +1,15 @@
+"""
+    draw(g::AbstractGraph, optset::AbstractOptimalNodeSet)
+
+Draw a graph with the optimal node set highlighted.
+
+# Arguments
+- `g::AbstractGraph`: The graph to draw.
+- `optset::AbstractOptimalNodeSet`: The optimal node set.
+
+# Returns
+- A plot of the graph with the optimal node set highlighted.
+"""
 function draw(
     g::AbstractGraph,
     optset::AbstractOptimalNodeSet,
@@ -23,6 +35,18 @@ function draw(
     return plot
 end
 
+"""
+    draw(g::AbstractGraph, optset::AbstractOptimalEdgeSet)
+
+Draw a graph with the optimal edge set highlighted.
+
+# Arguments
+- `g::AbstractGraph`: The graph to draw.
+- `optset::AbstractOptimalEdgeSet`: The optimal edge set.
+
+# Returns
+- A plot of the graph with the optimal edge set highlighted.
+"""
 function draw(
     g::AbstractGraph,
     optset::AbstractOptimalEdgeSet,

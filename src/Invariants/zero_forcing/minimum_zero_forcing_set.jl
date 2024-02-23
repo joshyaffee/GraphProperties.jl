@@ -14,6 +14,9 @@ A minimum zero forcing set is a zero forcing set of minimum cardinality.
 # Arguments
 - g::AbstractGraph: The input graph.
 
+# Returns
+- A minimum zero forcing set of `g`.
+
 # Examples
 ```jldoctest
 julia> using Graphs
@@ -24,13 +27,13 @@ julia> g = path_graph(5)
 {5, 4} undirected simple Int64 graph
 
 julia> compute(BruteForceMinimumZeroForcingSet, g)
-BruteForceMinimumZeroForcingSet(Set{Int64}([1]))
+BruteForceMinimumZeroForcingSet([1])
 
 julia> h = Graphs.complete_graph(4)
 {4, 6} undirected simple Int64 graph
 
 julia> compute(BruteForceMinimumZeroForcingSet, h)
-BruteForceMinimumZeroForcingSet(Set{Int64}([1, 2, 3]))
+BruteForceMinimumZeroForcingSet([1, 2, 3])
 ```
 """
 function compute(

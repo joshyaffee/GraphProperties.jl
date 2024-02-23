@@ -13,10 +13,29 @@ using CSV
 using DataFrames
 using Graphs
 
+"""
+    EdgeListFormat
+
+An abstract type that represents the file format of an edge list.
+
+Subtypes of `EdgeListFormat` include:
+- `CSVFormat`
+- `TXTFormat`
+"""
 abstract type EdgeListFormat end
 
+"""
+    CSVFormat
+
+A subtype of `EdgeListFormat` that represents the `.csv` file format.
+"""
 struct CSVFormat <: EdgeListFormat end
 
+"""
+    TXTFormat
+
+A subtype of `EdgeListFormat` that represents the `.txt` file format.
+"""
 struct TXTFormat <: EdgeListFormat end
 
 """
@@ -36,7 +55,11 @@ function _determine_format(path::String)
     return throw(ArgumentError("Unsupported file type: $(splitext(path)[2])"))
 end
 
+"""
+    _va;idate_node(value, column::String)
 
+Validate that a node is a positive integer.
+"""
 function _validate_node(value, column::String)
     value isa Int && value > 0 || throw(ArgumentError(
         "Invalid node in $column column: $value. Needs positive integer."

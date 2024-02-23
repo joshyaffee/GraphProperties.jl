@@ -36,9 +36,7 @@ julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
 julia> compute(MinimumDominatingSet, g)
-2-element Vector{Int64}:
-    1
-    3
+MinimumDominatingSet([2, 5])
 ```
 """
 function compute(
@@ -112,10 +110,7 @@ julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
 julia> compute(MinimumTotalDominatingSet, g)
-3-element Vector{Int64}:
-    1
-    2
-    3
+MinimumTotalDominatingSet([2, 3, 4])
 ```
 """
 function compute(

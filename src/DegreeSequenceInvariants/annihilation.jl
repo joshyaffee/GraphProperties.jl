@@ -3,6 +3,15 @@
     annihilation_number(g::SimpleGraph)
 
 Return the annihilation number of the graph `g`.
+
+The annihilation number of a graph `g` is the largest integer `k` such that the sum of the
+`k` smallest degrees in `g` is less than or equal to the number of edges in `g`.
+
+# Arguments
+- `g::SimpleGraph`: A simple graph.
+
+# Returns
+- The annihilation number of the graph `g`.
 """
 function annihilation_number(g::SimpleGraph{T},) where T <: Integer
     # Sort in non-decreasing order
