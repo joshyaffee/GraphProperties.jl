@@ -4,26 +4,35 @@
 
 Return the [maximum clique](https://en.wikipedia.org/wiki/Clique_problem) of `g`.
 
-### Description
-
 A [clique](https://en.wikipedia.org/wiki/Clique_(graph_theory)) of a graph `g` is a
 subset of the vertices of `g` such that every two distinct vertices in the clique are
 adjacent. A maximum clique is a clique of the largest possible size.
 
-## Example
+# Arguments
+
+- `g::AbstractGraph{T}`: The graph to compute the maximum clique of.
+
+# Keywords
+
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the maximum clique
+  problem.
+
+# Returns
+
+- A `MaximumClique` object representing the maximum clique of `g`.
+
+# Example
 
 ```jldoctest
 julia> using Graphs
 
-julia> using GraphInvariants
+julia> using GraphProperties.Invariants
 
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
 julia> compute(MaximumClique, g)
-3-element Vector{Int64}:
-    1
-    2
+MaximumClique([1, 5])
 ```
 """
 function compute(

@@ -1,4 +1,28 @@
+"""
+    girth(g::SimpleGraph{T}) where T <: Integer
 
+Return the girth of `g`.
+
+The girth of a graph is the length of the shortest cycle in the graph.
+
+# Arguments
+- `g::SimpleGraph{T}`: A graph.
+
+# Returns
+- The girth of `g`.
+
+# Example
+```jldoctest
+julia> using Graphs
+
+julia> using GraphProperties.Basics
+
+julia> g = PathGraph(5);
+
+julia> girth(g)
+Inf
+```
+"""
 function girth(g::SimpleGraph{T},) where T <: Integer
 
     shortest_cycle = Inf

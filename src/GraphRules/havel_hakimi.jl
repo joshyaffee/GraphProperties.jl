@@ -4,19 +4,33 @@
 
 Apply the Havel-Hakimi rule to the given sequence.
 
+The Havel-Hakimi rule is a graphical sequence test that determines if a given sequence is
+graphical. One step of the rule is to remove the largest number, d1, from the sequence and
+subtract 1 from the next d1 numbers in the sorted sequence. If the sequence is all zeros, then
+the original sequence is graphical. If the rule cannot be applied to the sequence, then
+the sequence is not graphical. This method applies one iteration of the Havel-Hakimi rule
+to a given sequence in-place and returns true if the rule was applied successfully.
+Otherwise, a DomainError is thrown. Note: if the sequence is not already sorted in
+non-increasing order, it will be sorted in-place.
+
+# Arguments
+- sequence::Vector{Int}: A sequence of integers.
+
+# Returns
+true if the rule was applied successfully, otherwise a DomainError is thrown.
+
 # Example
 ```jldoctest
-julia> using GraphInvariants
+julia> using GraphProperties.GraphRules
 
-julia> D = [3, 3, 2, 2, 1, 1]
+julia> D = [3, 3, 2, 2, 1, 1];
 
 julia> apply!(HavelHakimiRule, D)
 true
 
 julia> D
-6-element Vector{Int64}:
+5-element Vector{Int64}:
  2
- 1
  1
  1
  1
@@ -70,21 +84,36 @@ end
 
 Apply the Havel-Hakimi rule to the given sequence.
 
+The Havel-Hakimi rule is a graphical sequence test that determines if a given sequence is
+graphical. One step of the rule is to remove the largest number, d1, from the sequence and
+subtract 1 from the next d1 numbers in the sorted sequence. If the sequence is all zeros,
+then the original sequence is graphical. If the rule cannot be applied to the sequence,
+then the sequence is not graphical. This method applies one iteration of the Havel-Hakimi
+rule to a given sequence in-place and returns true if the rule was applied successfully.
+Otherwise, a DomainError is thrown. Note: if the sequence is not already sorted in
+non-increasing order, it will be sorted in-place.
+
+# Arguments
+- sequence::Vector{Int}: A sequence of integers.
+- eliminations::Vector{Int}: A vector to store the eliminations.
+
+# Returns
+true if the rule was applied successfully, otherwise a DomainError is thrown.
+
 # Example
 ```jldoctest
 julia> using GraphInvariants
 
-julia> D = [3, 3, 2, 2, 1, 1]
+julia> D = [3, 3, 2, 2, 1, 1];
 
-julia> eliminations = Int[]
+julia> eliminations = Int[];
 
 julia> apply!(HavelHakimiRule, D, eliminations)
 true
 
 julia> D
-6-element Vector{Int64}:
+5-element Vector{Int64}:
  2
- 1
  1
  1
  1

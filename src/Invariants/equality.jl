@@ -16,6 +16,10 @@ each edge tuple or `Graphs.SimpleGraphs.SimpleEdge` is ignored. Two sets of edge
 are considered equal if they contain the same pairs of vertices, regardless of
 the order in which the vertices appear in each edge.
 
+### Implementation Notes
+It does not matter if the input sets of edges are of different concrete types, as long as
+they are both subtypes of `AbstractOptimalEdgeSet`. See the example below.
+
 # Arguments
 - `a::AbstractOptimalEdgeSet`: The first set of edges to compare.
 - `b::AbstractOptimalEdgeSet`: The second set of edges to compare.
@@ -29,9 +33,9 @@ julia> using Graphs.SimpleGraphs: SimpleEdge
 
 julia> using GraphProperties.Invariants
 
-julia> a = OptimalEdgeSet([SimpleEdge(1, 2), SimpleEdge(2, 3)])
+julia> a = MaximumMatching([SimpleEdge(1, 2), SimpleEdge(2, 3)]);
 
-julia> b = OptimalEdgeSet([SimpleEdge(2, 1), SimpleEdge(3, 2)])
+julia> b = MinimumEdgeDominatingSet([SimpleEdge(2, 1), SimpleEdge(3, 2)]);
 
 julia> a == b
 true

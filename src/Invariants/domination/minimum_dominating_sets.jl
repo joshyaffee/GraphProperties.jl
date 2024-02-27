@@ -1,4 +1,3 @@
-
 """
     compute(
         ::Type{MinimumDominatingSet},
@@ -8,27 +7,36 @@
 
 Return a minimum dominating set of `g`.
 
-### Description
-
 A [dominating set](https://en.wikipedia.org/wiki/Dominating_set) of a graph `g` is a
 subset `S` of the vertices of `g` such that every vertex not in `S` is adjacent to at
 least one member of `S`. A dominating set is said to be minimum if it has the smallest
 possible cardinality among all dominating sets of `g`.
 
-## Example
+# Arguments
+
+- `g::AbstractGraph{T}`: The graph to compute the minimum dominating set of.
+
+# Keywords
+
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the minimum dominating set
+  problem.
+
+# Returns
+
+- A `MinimumDominatingSet` object representing the minimum dominating set of `g`.
+
+# Example
 
 ```jldoctest
 julia> using Graphs
 
-julia> using GraphInvariants
+julia> using GraphProperties.Invariants
 
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
 julia> compute(MinimumDominatingSet, g)
-2-element Vector{Int64}:
-    1
-    3
+MinimumDominatingSet([2, 5])
 ```
 """
 function compute(
@@ -74,28 +82,35 @@ end
 
 Return a minimum total dominating set of `g`.
 
-### Description
-
 A [total dominating set](https://en.wikipedia.org/wiki/Total_dominating_set) of a graph `g` is a
 subset `S` of the vertices of `g` such that every vertex in `g` is adjacent to at
 least one member of `S`. A total dominating set is said to be minimum if it has the smallest
 possible cardinality among all total dominating sets of `g`.
 
-## Example
+# Arguments
+
+- `g::SimpleGraph{T}`: The graph to compute the minimum total dominating set of.
+
+# Keywords
+
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the optimization problem.
+
+# Returns
+
+- A `MinimumTotalDominatingSet` object representing the minimum total dominating set of `g`.
+
+# Example
 
 ```jldoctest
 julia> using Graphs
 
-julia> using GraphInvariants
+julia> using GraphProperties.Invariants
 
 julia> g = cycle_graph(5)
 {5, 5} undirected simple Int64 graph
 
 julia> compute(MinimumTotalDominatingSet, g)
-3-element Vector{Int64}:
-    1
-    2
-    3
+MinimumTotalDominatingSet([2, 3, 4])
 ```
 """
 function compute(
@@ -132,6 +147,7 @@ function compute(
     return MinimumTotalDominatingSet(dominating_set)
 end
 
+# TODO: has this been tested?
 function compute(
     ::Type{MinimumLocatingDominatingSet},
     g::SimpleGraph{T};
@@ -174,6 +190,7 @@ function compute(
     return MinimumLocatingDominatingSet(locating_dominating_set)
 end
 
+# TODO: has this been tested?
 function compute(
     ::Type{MinimumPairedDominatingSet},
     g::SimpleGraph{T};
@@ -217,6 +234,7 @@ function compute(
     return MinimumPairedDominatingSet(paired_dominating_set)
 end
 
+# TODO: has this been tested?
 function compute(
     ::Type{MinimumIndependentDominatingSet},
     g::SimpleGraph{T};
@@ -260,7 +278,42 @@ function compute(
     return MinimumIndependentDominatingSet(dominating_set)
 end
 
+"""
+    compute(::Type{MinimumEdgeDominatingSet}, g::SimpleGraph{T}; optimizer=HiGHS.Optimizer)
 
+Return a minimum edge dominating set of `g`.
+
+An [edge dominating set](https://en.wikipedia.org/wiki/Edge_dominating_set) of a graph `g`
+is a subset `S` of the edges of `g` such that every edge in `g` is either in `S` or
+adjacent to an edge in `S`. A minimum edge dominating set is an edge dominating set of
+smallest possible cardinality.
+
+# Arguments
+
+- `g::SimpleGraph{T}`: The graph to compute the minimum edge dominating set of.
+
+# Keywords
+
+- `optimizer=HiGHS.Optimizer`: The optimizer to use to solve the optimization problem.
+
+# Returns
+
+- A `MinimumEdgeDominatingSet` object representing the minimum edge dominating set of `g`.
+
+# Example
+
+```jldoctest
+julia> using Graphs
+
+julia> using GraphProperties.Invariants
+
+julia> g = cycle_graph(5)
+{5, 5} undirected simple Int64 graph
+
+julia> compute(MinimumEdgeDominatingSet, g)
+MinimumEdgeDominatingSet(Graphs.SimpleGraphs.SimpleEdge{Int64}[Edge 1 => 5, Edge 2 => 3])
+```
+"""
 function compute(
     ::Type{MinimumEdgeDominatingSet},
     g::SimpleGraph{T};
