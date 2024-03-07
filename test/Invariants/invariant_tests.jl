@@ -140,6 +140,29 @@ end
         end
     end
 
+    @testset  "Other Domination Tests" begin
+        # to test:
+            # 1. LocatingDominationNumber / Set
+            # 2. PairedDominationNumber / Set
+            # 3. IndependentDominationNumber / Set
+            # 4. PowerDominationNumber / Set
+        
+        @testset "S-22 Graph Tests" begin
+            @test locating_domination_number(s22) == 4
+            @test paired_domination_number(s22) == 2
+            @test independent_domination_number(s22) == 3
+            @test power_domination_number(s22) == 2
+        end
+
+        @testset "Petersen Graph Tests" begin
+            @test locating_domination_number(g) == 4
+            @test paired_domination_number(g) == 6
+            @test independent_domination_number(g) == 3
+            @test power_domination_number(g) == 2
+        end
+
+    end
+
     @testset "Zero Forcing Tests" begin
 
         @testset "Petersen Graph Tests" begin
